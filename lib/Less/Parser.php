@@ -1,7 +1,7 @@
 <?php
 
 
-require 'LessCache.php';
+require_once 'Cache.php';
 
 class Less_Parser extends Less_Cache{
 
