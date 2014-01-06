@@ -1,6 +1,7 @@
 <?php
 
+namespace Less\Exception;
 
-class Less_Exception_Parser extends Exception{
+class Parser extends \Exception{
 
 }

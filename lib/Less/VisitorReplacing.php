@@ -1,69 +1,70 @@
 <?php
 
+namespace Less;
 
-class Less_VisitorReplacing extends Less_Visitor{
+class VisitorReplacing extends Visitor{
 
-	function visitObj( $node ){
+    function visitObj( $node ){
 
-		$funcName = 'visit'.$node->type;
-		if( isset($this->_visitFnCache[$funcName]) ){
+        $funcName = 'visit'.$node->type;
+        if( isset($this->_visitFnCache[$funcName]) ){
 
-			$visitDeeper = true;
-			$node = $this->$funcName( $node, $visitDeeper );
+            $visitDeeper = true;
+            $node = $this->$funcName( $node, $visitDeeper );
 
-			if( $node ){
-				if( $visitDeeper && is_object($node) ){
-					$node->accept($this);
-				}
+            if( $node ){
+                if( $visitDeeper && is_object($node) ){
+                    $node->accept($this);
+                }
 
-				$funcName = $funcName . "Out";
-				if( isset($this->_visitFnCache[$funcName]) ){
-					$this->$funcName( $node );
-				}
-			}
+                $funcName = $funcName . "Out";
+                if( isset($this->_visitFnCache[$funcName]) ){
+                    $this->$funcName( $node );
+                }
+            }
 
-		}else{
-			$node->accept($this);
-		}
+        }else{
+            $node->accept($this);
+        }
 
-		return $node;
-	}
+        return $node;
+    }
 
-	function visitArray( $nodes ){
+    function visitArray( $nodes ){
 
-		$newNodes = array();
-		foreach($nodes as $node){
-			$evald = $this->visitObj($node);
-			if( $evald ){
-				if( is_array($evald) ){
-					self::flatten($evald,$newNodes);
-				}else{
-					$newNodes[] = $evald;
-				}
-			}
-		}
-		return $newNodes;
-	}
+        $newNodes = array();
+        foreach($nodes as $node){
+            $evald = $this->visitObj($node);
+            if( $evald ){
+                if( is_array($evald) ){
+                    self::flatten($evald,$newNodes);
+                }else{
+                    $newNodes[] = $evald;
+                }
+            }
+        }
+        return $newNodes;
+    }
 
-	function flatten( $arr, &$out ){
+    function flatten( $arr, &$out ){
 
-		foreach($arr as $item){
-			if( !is_array($item) ){
-				$out[] = $item;
-				continue;
-			}
+        foreach($arr as $item){
+            if( !is_array($item) ){
+                $out[] = $item;
+                continue;
+            }
 
-			foreach($item as $nestedItem){
-				if( is_array($nestedItem) ){
-					self::flatten( $nestedItem, $out);
-				}else{
-					$out[] = $nestedItem;
-				}
-			}
-		}
+            foreach($item as $nestedItem){
+                if( is_array($nestedItem) ){
+                    self::flatten( $nestedItem, $out);
+                }else{
+                    $out[] = $nestedItem;
+                }
+            }
+        }
 
-		return $out;
-	}
+        return $out;
+    }
 
 }
 

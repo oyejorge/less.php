@@ -1,66 +1,67 @@
 <?php
 
+namespace Less\Tree;
 
-class Less_Tree_Extend extends Less_Tree{
+class Extend extends \Less\Tree{
 
-	public $selector;
-	public $option;
-	public $index;
-	public $selfSelectors = array();
-	public $allowBefore;
-	public $allowAfter;
-	public $firstExtendOnThisSelectorPath;
-	public $type = 'Extend';
-
-
-	public $object_id;
-	public $parent_ids = array();
-
-	function __construct($selector, $option, $index){
-		static $i = 0;
-		$this->selector = $selector;
-		$this->option = $option;
-		$this->index = $index;
-
-		switch($option){
-			case "all":
-				$this->allowBefore = true;
-				$this->allowAfter = true;
-			break;
-			default:
-				$this->allowBefore = false;
-				$this->allowAfter = false;
-			break;
-		}
-
-		$this->object_id = $i++;
-		$this->parent_ids = array($this->object_id);
-	}
-
-	function accept( $visitor ){
-		$this->selector = $visitor->visitObj( $this->selector );
-	}
-
-	function compile( $env ){
-		Less_Parser::$has_extends = true;
-		return new Less_Tree_Extend( $this->selector->compile($env), $this->option, $this->index);
-	}
-
-	function findSelfSelectors( $selectors ){
-		$selfElements = array();
+    public $selector;
+    public $option;
+    public $index;
+    public $selfSelectors = array();
+    public $allowBefore;
+    public $allowAfter;
+    public $firstExtendOnThisSelectorPath;
+    public $type = 'Extend';
 
 
-		for( $i = 0, $selectors_len = count($selectors); $i < $selectors_len; $i++ ){
-			$selectorElements = $selectors[$i]->elements;
-			// duplicate the logic in genCSS function inside the selector node.
-			// future TODO - move both logics into the selector joiner visitor
-			if( $i && $selectorElements && $selectorElements[0]->combinator->value === "") {
-				$selectorElements[0]->combinator->value = ' ';
-			}
-			$selfElements = array_merge( $selfElements, $selectors[$i]->elements );
-		}
+    public $object_id;
+    public $parent_ids = array();
 
-		$this->selfSelectors = array(new Less_Tree_Selector($selfElements));
-	}
+    function __construct($selector, $option, $index){
+        static $i = 0;
+        $this->selector = $selector;
+        $this->option = $option;
+        $this->index = $index;
+
+        switch($option){
+            case "all":
+                $this->allowBefore = true;
+                $this->allowAfter = true;
+            break;
+            default:
+                $this->allowBefore = false;
+                $this->allowAfter = false;
+            break;
+        }
+
+        $this->object_id = $i++;
+        $this->parent_ids = array($this->object_id);
+    }
+
+    function accept( $visitor ){
+        $this->selector = $visitor->visitObj( $this->selector );
+    }
+
+    function compile( $env ){
+        \Less\Parser::$has_extends = true;
+        return new \Less\Tree\Extend( $this->selector->compile($env), $this->option, $this->index);
+    }
+
+    function findSelfSelectors( $selectors ){
+        $selfElements = array();
+
+
+        for( $i = 0, $selectors_len = count($selectors); $i < $selectors_len; $i++ ){
+            $selectorElements = $selectors[$i]->elements;
+            // duplicate the logic in genCSS function inside the selector node.
+            // future TODO - move both logics into the selector joiner visitor
+            if( $i && $selectorElements && $selectorElements[0]->combinator->value === "") {
+                $selectorElements[0]->combinator->value = ' ';
+            }
+            $selfElements = array_merge( $selfElements, $selectors[$i]->elements );
+        }
+
+        $this->selfSelectors = array(new \Less\Tree\Selector($selfElements));
+    }
 
 }

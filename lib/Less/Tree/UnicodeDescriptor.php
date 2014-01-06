@@ -1,20 +1,21 @@
 <?php
 
+namespace Less\Tree;
 
-class Less_Tree_UnicodeDescriptor extends Less_Tree{
+class UnicodeDescriptor extends \Less\Tree{
 
-	public $type = 'UnicodeDescriptor';
+    public $type = 'UnicodeDescriptor';
 
-	public function __construct($value){
-		$this->value = $value;
-	}
+    public function __construct($value){
+        $this->value = $value;
+    }
 
-	public function genCSS( $env, &$strs ){
-		self::OutputAdd( $strs, $this->value );
-	}
+    public function genCSS( $env, &$strs ){
+        self::outputAdd( $strs, $this->value );
+    }
 
-	public function compile($env){
-		return $this;
-	}
+    public function compile($env){
+        return $this;
+    }
 }
 

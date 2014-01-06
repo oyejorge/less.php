@@ -1,26 +1,28 @@
 <?php
 
-class Less_Tree_Paren extends Less_Tree{
+namespace Less\Tree;
 
-	public $value;
-	public $type = 'Paren';
+class Paren extends \Less\Tree{
 
-	public function __construct($value) {
-		$this->value = $value;
-	}
+    public $value;
+    public $type = 'Paren';
 
-	function accept($visitor){
-		$this->value = $visitor->visitObj($this->value);
-	}
+    public function __construct($value) {
+        $this->value = $value;
+    }
 
-	function genCSS( $env, &$strs ){
-		self::OutputAdd( $strs, '(' );
-		$this->value->genCSS( $env, $strs );
-		self::OutputAdd( $strs, ')' );
-	}
+    function accept($visitor){
+        $this->value = $visitor->visitObj($this->value);
+    }
 
-	public function compile($env) {
-		return new Less_Tree_Paren($this->value->compile($env));
-	}
+    function genCSS( $env, &$strs ){
+        self::outputAdd( $strs, '(' );
+        $this->value->genCSS( $env, $strs );
+        self::outputAdd( $strs, ')' );
+    }
+
+    public function compile($env) {
+        return new \Less\Tree\Paren($this->value->compile($env));
+    }
 
 }
