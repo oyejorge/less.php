@@ -1,27 +1,29 @@
 <?php
 
 
-class Less_Tree_Keyword extends Less_Tree{
+namespace Less\Tree;
 
-	public $type = 'Keyword';
+class Keyword extends \Less\Tree{
 
-	public function __construct($value=null){
-		$this->value = $value;
-	}
+    public $type = 'Keyword';
 
-	public function compile($env){
-		return $this;
-	}
+    public function __construct($value=null){
+        $this->value = $value;
+    }
 
-	public function genCSS( $env, &$strs ){
-		self::OutputAdd( $strs, $this->value );
-	}
+    public function compile($env){
+        return $this;
+    }
 
-	public function compare($other) {
-		if ($other instanceof Less_Tree_Keyword) {
-			return $other->value === $this->value ? 0 : 1;
-		} else {
-			return -1;
-		}
-	}
+    public function genCSS( $env, &$strs ){
+        self::outputAdd( $strs, $this->value );
+    }
+
+    public function compare($other) {
+        if ($other instanceof \Less\Tree\Keyword) {
+            return $other->value === $this->value ? 0 : 1;
+        } else {
+            return -1;
+        }
+    }
 }

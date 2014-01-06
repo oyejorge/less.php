@@ -1,11 +1,12 @@
 <?php
 
+namespace Less\Tree;
 
 //
 // A function call node.
 //
 
-class Less_Tree_Call extends Less_Tree{
+class Call extends \Less\Tree{
     public $value;
 
     var $name;
@@ -14,16 +15,16 @@ class Less_Tree_Call extends Less_Tree{
     var $currentFileInfo;
     public $type = 'Call';
 
-	public function __construct($name, $args, $index, $currentFileInfo = null ){
-		$this->name = $name;
-		$this->args = $args;
-		$this->index = $index;
-		$this->currentFileInfo = $currentFileInfo;
-	}
+    public function __construct($name, $args, $index, $currentFileInfo = null ){
+        $this->name = $name;
+        $this->args = $args;
+        $this->index = $index;
+        $this->currentFileInfo = $currentFileInfo;
+    }
 
-	function accept( $visitor ){
-		$this->args = $visitor->visitArray( $this->args );
-	}
+    function accept( $visitor ){
+        $this->args = $visitor->visitArray( $this->args );
+    }
 
     //
     // When evaluating a function call,
@@ -38,57 +39,57 @@ class Less_Tree_Call extends Less_Tree{
     // The function should receive the value, not the variable.
     //
     public function compile($env){
-		$args = array();
-		foreach($this->args as $a){
-			$args[] = $a->compile($env);
-		}
+        $args = array();
+        foreach($this->args as $a){
+            $args[] = $a->compile($env);
+        }
 
-		$name = $this->name;
-		switch($name){
-			case '%':
-			$name = '_percent';
-			break;
+        $name = $this->name;
+        switch($name){
+            case '%':
+            $name = '_percent';
+            break;
 
-			case 'data-uri':
-			$name = 'datauri';
-			break;
+            case 'data-uri':
+            $name = 'datauri';
+            break;
 
-			case 'svg-gradient':
-			$name = 'svggradient';
-			break;
-		}
+            case 'svg-gradient':
+            $name = 'svggradient';
+            break;
+        }
 
 
-		if( is_callable( array('Less_Functions',$name) ) ){ // 1.
-			try {
-				$func = new Less_Functions($env, $this->currentFileInfo);
-				$result = call_user_func_array( array($func,$name),$args);
-				if( $result != null ){
-					return $result;
-				}
+        if( is_callable( array('\\Less\\Functions',$name) ) ){ // 1.
+            try {
+                $func = new \Less\Functions($env, $this->currentFileInfo);
+                $result = call_user_func_array( array($func,$name),$args);
+                if( $result != null ){
+                    return $result;
+                }
 
-			} catch (Exception $e) {
-				throw Less_Exception_Compiler('error evaluating function `' . $this->name . '` '.$e->getMessage().' index: '. $this->index);
-			}
+            } catch (\Exception $e) {
+                throw new \Less\Exception\Compiler('error evaluating function `' . $this->name . '` '.$e->getMessage().' index: '. $this->index);
+            }
 
-		}
+        }
 
-		return new Less_Tree_Call( $this->name, $args, $this->index, $this->currentFileInfo );
+        return new \Less\Tree\Call( $this->name, $args, $this->index, $this->currentFileInfo );
     }
 
-	public function genCSS( $env, &$strs ){
+    public function genCSS( $env, &$strs ){
 
-		self::OutputAdd( $strs, $this->name . '(', $this->currentFileInfo, $this->index );
-		$args_len = count($this->args);
-		for($i = 0; $i < $args_len; $i++ ){
-			$this->args[$i]->genCSS($env, $strs );
-			if( $i + 1 < $args_len ){
-				self::OutputAdd( $strs, ', ' );
-			}
-		}
+        self::outputAdd( $strs, $this->name . '(', $this->currentFileInfo, $this->index );
+        $args_len = count($this->args);
+        for($i = 0; $i < $args_len; $i++ ){
+            $this->args[$i]->genCSS($env, $strs );
+            if( $i + 1 < $args_len ){
+                self::outputAdd( $strs, ', ' );
+            }
+        }
 
-		self::OutputAdd( $strs, ')' );
-	}
+        self::outputAdd( $strs, ')' );
+    }
 
     public function toCSS($env = null){
         return $this->compile($env)->toCSS();

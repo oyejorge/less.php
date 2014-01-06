@@ -1,63 +1,65 @@
 <?php
 
-class Less_Tree{
+namespace Less;
 
-	public function toCSS($env = null){
-		$strs = array();
-		$this->genCSS($env, $strs );
-		return implode('',$strs);
-	}
+class Tree{
 
-	public static function OutputAdd( &$strs, $chunk, $fileInfo = null, $index = null ){
-		$strs[] = $chunk;
-	}
+    public function toCSS($env = null){
+        $strs = array();
+        $this->genCSS($env, $strs );
+        return implode('',$strs);
+    }
 
-
-	public static function outputRuleset($env, &$strs, $rules ){
-
-		$ruleCnt = count($rules);
-		$env->tabLevel++;
+    public static function outputAdd( &$strs, $chunk, $fileInfo = null, $index = null ){
+        $strs[] = $chunk;
+    }
 
 
-		// Compressed
-		if( Less_Environment::$compress ){
-			self::OutputAdd( $strs, '{' );
-			for( $i = 0; $i < $ruleCnt; $i++ ){
-				$rules[$i]->genCSS( $env, $strs );
-			}
-			self::OutputAdd( $strs, '}' );
-			$env->tabLevel--;
-			return;
-		}
+    public static function outputRuleset($env, &$strs, $rules ){
+
+        $ruleCnt = count($rules);
+        $env->tabLevel++;
 
 
-		// Non-compressed
-		$tabSetStr = "\n".str_repeat( '  ' , $env->tabLevel-1 );
-		$tabRuleStr = $tabSetStr.'  ';
+        // Compressed
+        if( \Less\Environment::$compress ){
+            self::outputAdd( $strs, '{' );
+            for( $i = 0; $i < $ruleCnt; $i++ ){
+                $rules[$i]->genCSS( $env, $strs );
+            }
+            self::outputAdd( $strs, '}' );
+            $env->tabLevel--;
+            return;
+        }
 
-		self::OutputAdd( $strs, " {" );
-		for($i = 0; $i < $ruleCnt; $i++ ){
-			self::OutputAdd( $strs, $tabRuleStr );
-			$rules[$i]->genCSS( $env, $strs );
-		}
-		$env->tabLevel--;
-		self::OutputAdd( $strs, $tabSetStr.'}' );
 
-	}
+        // Non-compressed
+        $tabSetStr = "\n".str_repeat( '  ' , $env->tabLevel-1 );
+        $tabRuleStr = $tabSetStr.'  ';
 
-	public function accept($visitor){}
+        self::outputAdd( $strs, " {" );
+        for($i = 0; $i < $ruleCnt; $i++ ){
+            self::outputAdd( $strs, $tabRuleStr );
+            $rules[$i]->genCSS( $env, $strs );
+        }
+        $env->tabLevel--;
+        self::outputAdd( $strs, $tabSetStr.'}' );
 
-	/**
-	 * Requires php 5.3+
-	 */
-	public static function __set_state($args){
+    }
 
-		$class = get_called_class();
-		$obj = new $class(null,null,null,null);
-		foreach($args as $key => $val){
-			$obj->$key = $val;
-		}
-		return $obj;
-	}
+    public function accept($visitor){}
+
+    /**
+     * Requires php 5.3+
+     */
+    public static function __set_state($args){
+
+        $class = get_called_class();
+        $obj = new $class(null,null,null,null);
+        foreach($args as $key => $val){
+            $obj->$key = $val;
+        }
+        return $obj;
+    }
 
 }

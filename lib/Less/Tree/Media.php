@@ -1,166 +1,168 @@
 <?php
 
-class Less_Tree_Media extends Less_Tree{
+namespace Less\Tree;
 
-	public $features;
-	public $ruleset;
-	public $type = 'Media';
+class Media extends \Less\Tree{
 
-	public function __construct($value = array(), $features = array(), $index = null, $currentFileInfo = null ){
+    public $features;
+    public $ruleset;
+    public $type = 'Media';
 
-		$this->index = $index;
-		$this->currentFileInfo = $currentFileInfo;
+    public function __construct($value = array(), $features = array(), $index = null, $currentFileInfo = null ){
 
-		$selectors = $this->emptySelectors();
+        $this->index = $index;
+        $this->currentFileInfo = $currentFileInfo;
 
-		$this->features = new Less_Tree_Value($features);
+        $selectors = $this->emptySelectors();
 
-		$this->rules = array(new Less_Tree_Ruleset($selectors, $value));
-		$this->rules[0]->allowImports = true;
-	}
+        $this->features = new \Less\Tree\Value($features);
 
-	function accept( $visitor ){
-		$this->features = $visitor->visitObj($this->features);
-		$this->rules = $visitor->visitArray($this->rules);
-	}
+        $this->rules = array(new \Less\Tree\Ruleset($selectors, $value));
+        $this->rules[0]->allowImports = true;
+    }
 
-	function genCSS( $env, &$strs ){
+    function accept( $visitor ){
+        $this->features = $visitor->visitObj($this->features);
+        $this->rules = $visitor->visitArray($this->rules);
+    }
 
-		self::OutputAdd( $strs, '@media ', $this->currentFileInfo, $this->index );
-		$this->features->genCSS( $env, $strs );
-		Less_Tree::outputRuleset( $env, $strs, $this->rules);
+    function genCSS( $env, &$strs ){
 
-	}
+        self::outputAdd( $strs, '@media ', $this->currentFileInfo, $this->index );
+        $this->features->genCSS( $env, $strs );
+        \Less\Tree::outputRuleset( $env, $strs, $this->rules);
 
-	public function compile($env) {
+    }
 
-		$media = new Less_Tree_Media(array(), array(), $this->index, $this->currentFileInfo );
+    public function compile($env) {
 
-		$strictMathBypass = false;
-		if( $env->strictMath === false) {
-			$strictMathBypass = true;
-			$env->strictMath = true;
-		}
-		try {
-			$media->features = $this->features->compile($env);
-		}catch(Exception $e){}
+        $media = new \Less\Tree\Media(array(), array(), $this->index, $this->currentFileInfo );
 
-		if( $strictMathBypass ){
-			$env->strictMath = false;
-		}
+        $strictMathBypass = false;
+        if( $env->strictMath === false) {
+            $strictMathBypass = true;
+            $env->strictMath = true;
+        }
+        try {
+            $media->features = $this->features->compile($env);
+        }catch(Exception $e){}
 
-		$env->mediaPath[] = $media;
-		$env->mediaBlocks[] = $media;
+        if( $strictMathBypass ){
+            $env->strictMath = false;
+        }
 
-		array_unshift($env->frames, $this->rules[0]);
-		$media->rules = array($this->rules[0]->compile($env));
-		array_shift($env->frames);
+        $env->mediaPath[] = $media;
+        $env->mediaBlocks[] = $media;
 
-		array_pop($env->mediaPath);
+        array_unshift($env->frames, $this->rules[0]);
+        $media->rules = array($this->rules[0]->compile($env));
+        array_shift($env->frames);
 
-		return !$env->mediaPath ? $media->compileTop($env) : $media->compileNested($env);
-	}
+        array_pop($env->mediaPath);
 
-	public function variable($name) {
-		return $this->rules[0]->variable($name);
-	}
+        return !$env->mediaPath ? $media->compileTop($env) : $media->compileNested($env);
+    }
 
-	public function find($selector) {
-		return $this->rules[0]->find($selector, $this);
-	}
+    public function variable($name) {
+        return $this->rules[0]->variable($name);
+    }
 
-	public function emptySelectors(){
-		$el = new Less_Tree_Element('','&', $this->index, $this->currentFileInfo );
-		return array( new Less_Tree_Selector(array($el), array(), null, $this->index, $this->currentFileInfo) );
-	}
+    public function find($selector) {
+        return $this->rules[0]->find($selector, $this);
+    }
 
-	public function markReferenced(){
-		$this->isReferenced = true;
-		foreach($this->rules[0]->rules as $rule){
-			if( Less_Parser::is_method($rule,'markReferenced') ){
-				$rule->markReferenced();
-			}
-		}
-	}
+    public function emptySelectors(){
+        $el = new \Less\Tree\Element('','&', $this->index, $this->currentFileInfo );
+        return array( new \Less\Tree\Selector(array($el), array(), null, $this->index, $this->currentFileInfo) );
+    }
 
-	// evaltop
-	public function compileTop($env) {
-		$result = $this;
+    public function markReferenced(){
+        $this->isReferenced = true;
+        foreach($this->rules[0]->rules as $rule){
+            if( \Less\Parser::is_method($rule,'markReferenced') ){
+                $rule->markReferenced();
+            }
+        }
+    }
 
-		if (count($env->mediaBlocks) > 1) {
-			$selectors = $this->emptySelectors();
-			$result = new Less_Tree_Ruleset($selectors, $env->mediaBlocks);
-			$result->multiMedia = true;
-		}
+    // evaltop
+    public function compileTop($env) {
+        $result = $this;
 
-		$env->mediaBlocks = array();
-		$env->mediaPath = array();
+        if (count($env->mediaBlocks) > 1) {
+            $selectors = $this->emptySelectors();
+            $result = new \Less\Tree\Ruleset($selectors, $env->mediaBlocks);
+            $result->multiMedia = true;
+        }
 
-		return $result;
-	}
+        $env->mediaBlocks = array();
+        $env->mediaPath = array();
 
-	public function compileNested($env) {
-		$path = array_merge($env->mediaPath, array($this));
+        return $result;
+    }
 
-		// Extract the media-query conditions separated with `,` (OR).
-		foreach ($path as $key => $p) {
-			$value = $p->features instanceof Less_Tree_Value ? $p->features->value : $p->features;
-			$path[$key] = is_array($value) ? $value : array($value);
-		}
+    public function compileNested($env) {
+        $path = array_merge($env->mediaPath, array($this));
 
-		// Trace all permutations to generate the resulting media-query.
-		//
-		// (a, b and c) with nested (d, e) ->
-		//	a and d
-		//	a and e
-		//	b and c and d
-		//	b and c and e
+        // Extract the media-query conditions separated with `,` (OR).
+        foreach ($path as $key => $p) {
+            $value = $p->features instanceof \Less\Tree\Value ? $p->features->value : $p->features;
+            $path[$key] = is_array($value) ? $value : array($value);
+        }
 
-		$permuted = $this->permute($path);
-		$expressions = array();
-		foreach($permuted as $path){
+        // Trace all permutations to generate the resulting media-query.
+        //
+        // (a, b and c) with nested (d, e) ->
+        //    a and d
+        //    a and e
+        //    b and c and d
+        //    b and c and e
 
-			for( $i=0, $len=count($path); $i < $len; $i++){
-				$path[$i] = Less_Parser::is_method($path[$i], 'toCSS') ? $path[$i] : new Less_Tree_Anonymous($path[$i]);
-			}
+        $permuted = $this->permute($path);
+        $expressions = array();
+        foreach($permuted as $path){
 
-			for( $i = count($path) - 1; $i > 0; $i-- ){
-				array_splice($path, $i, 0, array(new Less_Tree_Anonymous('and')));
-			}
+            for( $i=0, $len=count($path); $i < $len; $i++){
+                $path[$i] = \Less\Parser::is_method($path[$i], 'toCSS') ? $path[$i] : new \Less\Tree\Anonymous($path[$i]);
+            }
 
-			$expressions[] = new Less_Tree_Expression($path);
-		}
-		$this->features = new Less_Tree_Value($expressions);
+            for( $i = count($path) - 1; $i > 0; $i-- ){
+                array_splice($path, $i, 0, array(new \Less\Tree\Anonymous('and')));
+            }
+
+            $expressions[] = new \Less\Tree\Expression($path);
+        }
+        $this->features = new \Less\Tree\Value($expressions);
 
 
 
-		// Fake a tree-node that doesn't output anything.
-		return new Less_Tree_Ruleset(array(), array());
-	}
+        // Fake a tree-node that doesn't output anything.
+        return new \Less\Tree\Ruleset(array(), array());
+    }
 
-	public function permute($arr) {
-		if (!$arr)
-			return array();
+    public function permute($arr) {
+        if (!$arr)
+            return array();
 
-		if (count($arr) == 1)
-			return $arr[0];
+        if (count($arr) == 1)
+            return $arr[0];
 
-		$result = array();
-		$rest = $this->permute(array_slice($arr, 1));
-		foreach ($rest as $r) {
-			foreach ($arr[0] as $a) {
-				$result[] = array_merge(
-					is_array($a) ? $a : array($a),
-					is_array($r) ? $r : array($r)
-				);
-			}
-		}
+        $result = array();
+        $rest = $this->permute(array_slice($arr, 1));
+        foreach ($rest as $r) {
+            foreach ($arr[0] as $a) {
+                $result[] = array_merge(
+                    is_array($a) ? $a : array($a),
+                    is_array($r) ? $r : array($r)
+                );
+            }
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
-	function bubbleSelectors($selectors) {
-		$this->rules = array(new Less_Tree_Ruleset( $selectors, array($this->rules[0])));
-	}
+    function bubbleSelectors($selectors) {
+        $this->rules = array(new \Less\Tree\Ruleset( $selectors, array($this->rules[0])));
+    }
 
 }

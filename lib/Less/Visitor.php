@@ -1,43 +1,45 @@
 <?php
 
-class Less_Visitor{
+namespace Less;
 
-	var $methods = array();
-	var $_visitFnCache = array();
+class Visitor{
 
-	function __construct(){
-		$this->_visitFnCache = get_class_methods(get_class($this));
-		$this->_visitFnCache = array_flip($this->_visitFnCache);
-	}
+    var $methods = array();
+    var $_visitFnCache = array();
 
-	function visitObj( $node ){
+    function __construct(){
+        $this->_visitFnCache = get_class_methods(get_class($this));
+        $this->_visitFnCache = array_flip($this->_visitFnCache);
+    }
 
-		$funcName = 'visit'.$node->type;
-		if( isset($this->_visitFnCache[$funcName]) ){
+    function visitObj( $node ){
 
-			$visitDeeper = true;
-			$this->$funcName( $node, $visitDeeper );
+        $funcName = 'visit'.$node->type;
+        if( isset($this->_visitFnCache[$funcName]) ){
 
-			if( $visitDeeper ){
-				$node->accept($this);
-			}
+            $visitDeeper = true;
+            $this->$funcName( $node, $visitDeeper );
 
-			$funcName = $funcName . "Out";
-			if( isset($this->_visitFnCache[$funcName]) ){
-				$this->$funcName( $node );
-			}
+            if( $visitDeeper ){
+                $node->accept($this);
+            }
 
-		}else{
-			$node->accept($this);
-		}
+            $funcName = $funcName . "Out";
+            if( isset($this->_visitFnCache[$funcName]) ){
+                $this->$funcName( $node );
+            }
 
-		return $node;
-	}
+        }else{
+            $node->accept($this);
+        }
 
-	function visitArray( $nodes ){
+        return $node;
+    }
 
-		array_map( array($this,'visitObj'), $nodes);
-		return $nodes;
-	}
+    function visitArray( $nodes ){
+
+        array_map( array($this,'visitObj'), $nodes);
+        return $nodes;
+    }
 }
 
