@@ -228,7 +228,7 @@ class Less_Tree_Import extends Less_Tree{
 						return array( $full_path, $uri );
 					}
 				}else{
-					$path = rtrim($rootpath,'/').'/'.ltrim($evald_path,'/');
+					$path = rtrim($rootpath,'/\\').'/'.ltrim($evald_path,'/\\');
 
 					if( file_exists($path) ){
 						$full_path = Less_Environment::normalizePath($path);

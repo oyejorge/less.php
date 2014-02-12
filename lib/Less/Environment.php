@@ -115,8 +115,11 @@ class Less_Environment{
 	 *
 	 */
 	static function normalizePath($path){
-
-		$segments = explode('/',$path);
+		if (strtolower(substr(PHP_OS, 0, '3')) === 'win') {
+			$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+		}
+		
+		$segments = explode(DIRECTORY_SEPARATOR,$path);
 		$segments = array_reverse($segments);
 
 		$path = array();
@@ -146,7 +149,7 @@ class Less_Environment{
 			}
 		}
 
-		return implode('/',$path);
+		return implode(DIRECTORY_SEPARATOR,$path);
 	}
 
 
