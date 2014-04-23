@@ -85,13 +85,19 @@ class lessc{
 	}
 
 	public function compile($string, $name = null){
-
+		$options = array();
 		$oldImport = $this->importDir;
 		$this->importDir = (array)$this->importDir;
 
 		$this->allParsedFiles = array();
 
-		$parser = new Less_Parser();
+		switch($this->formatterName){
+			case 'compressed':
+				$options['compress'] = true;
+				break;
+		}
+
+		$parser = new Less_Parser($options);
 		$parser->SetImportDirs($this->getImportDirs());
 		if( count( $this->registeredVars ) ){
 			$parser->ModifyVars( $this->registeredVars );
