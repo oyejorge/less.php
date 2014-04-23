@@ -9,7 +9,7 @@
  */
 
 // Register autoloader for non-composer installations
-if (!class_exists('Less_Parser')) {
+if (!class_exists('Less_Parser', FALSE)) {
 	require_once dirname(__FILE__).'/lib/Less/Autoloader.php';
 	Less_Autoloader::register();
 }
@@ -60,7 +60,7 @@ class lessc{
 	public function parse($buffer, $presets = array()){
 		$options = array();
 		$this->setVariables($presets);
-		
+
 		switch($this->formatterName){
 			case 'compressed':
 				$options['compress'] = true;
