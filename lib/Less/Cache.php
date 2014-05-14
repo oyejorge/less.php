@@ -22,9 +22,10 @@ class Less_Cache{
 	 * @param array $less_files Array of .less files to compile
 	 * @param array $parser_options Array of compiler options
 	 * @param boolean $use_cache Set to false to regenerate the css file
+	 * @param array $variables Will be passed on to parser ModifyVars method
 	 * @return string Name of the css file
 	 */
-	public static function Get( $less_files, $parser_options = array(), $use_cache = true ){
+	public static function Get( $less_files, $parser_options = array(), $use_cache = true, $variables = array() ){
 
 
 		//check $cache_dir
@@ -71,7 +72,7 @@ class Less_Cache{
 
 		}
 
-		$compiled = self::Cache( $less_files, $parser_options );
+		$compiled = self::Cache( $less_files, $parser_options, $variables );
 		if( !$compiled ){
 			return false;
 		}
@@ -108,7 +109,7 @@ class Less_Cache{
 		return self::Get( $less_files, $parser_options, false );
 	}
 
-	public static function Cache( &$less_files, $parser_options = array() ){
+	public static function Cache( &$less_files, $parser_options = array(), $variables ){
 
 
 		// get less.php if it exists
@@ -131,6 +132,10 @@ class Less_Cache{
 			}
 
 			$parser->ParseFile( $file_path, $uri_or_less );
+		}
+		
+		if(!empty($variables)){
+			$parser->ModifyVars( $variables );
 		}
 
 		$compiled = $parser->getCss();
