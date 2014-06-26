@@ -79,7 +79,6 @@ class Less_Cache{
 
 					if( $output_file && file_exists($output_file) ){
 						@touch($list_file);
-						@touch($output_file);
 						return basename($output_file); // for backwards compatibility, we just return the name of the file
 					}
 				}
