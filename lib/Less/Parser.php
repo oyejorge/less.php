@@ -458,7 +458,7 @@ class Less_Parser{
 		$this->rules = array_merge($this->rules, $this->GetRules( $file_path ));
 
 		//reset php settings
-		if (isset($mb_internal_encoding) {
+		if (isset($mb_internal_encoding)) {
 			@ini_set("mbstring.internal_encoding", $mb_internal_encoding);
 		}
 	}
