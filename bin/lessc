@@ -119,6 +119,7 @@ if ($watch) {
 	}
 
 	$lastAction = 0;
+	$lastImports = array();
 
 	echo("lessc: watching input files\n");
 
@@ -143,8 +144,23 @@ if ($watch) {
 			}
 		}
 
-		if ($updated) {
+		if (!$updated && $lastImports) {
+			foreach ($lastImports as $dirname => $imports) {
+				foreach ($imports as $input) {
+					if (filemtime($dirname . DIRECTORY_SEPARATOR . $input) > $lastAction) {
+						$updated = true;
+						break;
+					}
+				}
+				if ($updated) {
+					break;
+				}
+			}
+		}
+
+		if ($updated || !$lastImports) {
 			$lastAction = time();
+			$lastImports = array();
 			$parser = new Less_Parser($env);
 			foreach ($inputs as $input) {
 				try {
@@ -156,7 +172,14 @@ if ($watch) {
 				}
 			}
 
-			file_put_contents($output, $parser->getCss());
+			try {
+				file_put_contents($output, $parser->getCss());
+			}
+			catch (Exception $e) {
+				echo("lessc: " . $e->getMessage() . " \n");
+			}
+			$lastImports[dirname($input)] = Less_Parser::AllParsedFiles();
+
 			echo("lessc: output file recompilled\n");
 		}
 
