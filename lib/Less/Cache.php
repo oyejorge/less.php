@@ -14,6 +14,8 @@ class Less_Cache{
 	// directory less.php can use for storing data
 	public static $cache_dir	= false;
 
+	public static $cache_prefix = "lessphp_";
+
 	// specifies the number of seconds after which data created by less.php will be seen as 'garbage' and potentially cleaned up
 	public static $gc_lifetime	= 604800;
 
@@ -34,6 +36,11 @@ class Less_Cache{
 		//check $cache_dir
 		if( isset($parser_options['cache_dir']) ){
 			Less_Cache::$cache_dir = $parser_options['cache_dir'];
+		}
+
+		//check $cache_prefix
+		if( isset($parser_options['cache_prefix']) ){
+			Less_Cache::$cache_prefix = $parser_options['cache_prefix'];
 		}
 
 		if( empty(Less_Cache::$cache_dir) ){
@@ -59,7 +66,8 @@ class Less_Cache{
 
 		// generate name for compiled css file
 		$hash = md5(json_encode($less_files));
- 		$list_file = Less_Cache::$cache_dir.'lessphp_'.$hash.'.list';
+		$prefix = $parser_options['cache_prefix'];
+ 		$list_file = Less_Cache::$cache_dir.Less_Cache::$cache_prefix.$hash.'.list';
 
 
  		// check cached content
@@ -180,7 +188,7 @@ class Less_Cache{
 			$temp[] = filemtime($file)."\t".filesize($file)."\t".$file;
 		}
 
-		return 'lessphp_'.sha1(json_encode($temp)).'.css';
+		return Less_Cache::$cache_prefix.sha1(json_encode($temp)).'.css';
 	}
 
 
@@ -226,7 +234,8 @@ class Less_Cache{
 			foreach($files as $file){
 
 				// don't delete if the file wasn't created with less.php
-				if( strpos($file,'lessphp_') !== 0 ){
+				// empty prefix causes an empty needle warning
+				if( Less_Cache::$cache_prefix !== "" && strpos($file, Less_Cache::$cache_prefix) !== 0 ){
 					continue;
 				}
 
@@ -284,7 +293,7 @@ class Less_Cache{
 		//pop the cached name that should match $compiled_name
 		$css_file_name = array_pop($list);
 
-		if( !preg_match('/^lessphp_[a-f0-9]+\.css$/',$css_file_name) ){
+		if( !preg_match('/^'.Less_Cache::$cache_prefix.'[a-f0-9]+\.css$/',$css_file_name) ){
 			$list[] = $css_file_name;
 			$css_file_name = false;
 		}
