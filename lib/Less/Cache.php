@@ -66,7 +66,6 @@ class Less_Cache{
 
 		// generate name for compiled css file
 		$hash = md5(json_encode($less_files));
-		$prefix = $parser_options['cache_prefix'];
  		$list_file = Less_Cache::$cache_dir.Less_Cache::$cache_prefix.$hash.'.list';
 
 
