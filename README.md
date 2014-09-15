@@ -1,6 +1,9 @@
 [![Build Status](https://travis-ci.org/Less-PHP/less.php.png?branch=master)](https://travis-ci.org/Less-PHP/less.php)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Less-PHP/less.php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Less-PHP/less.php/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/Less-PHP/less.php/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Less-PHP/less.php/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/less.php/less.php/v/stable.svg)](https://packagist.org/packages/less.php/less.php)
+[![Total Downloads](https://poser.pugx.org/less.php/less.php/downloads.svg)](https://packagist.org/packages/less.php/less.php)
+[![License](https://poser.pugx.org/less.php/less.php/license.svg)](https://packagist.org/packages/less.php/less.php)
 
 [Less.php](http://lessphp.gpeasy.com)
 ========
@@ -41,7 +44,7 @@ Step 1. Edit your `composer.json`:
 ```json
 {
     "require": {
-        "oyejorge/less.php": "~1.5"
+        "less.php/less.php": "~1.7"
     }
 }
 ```
@@ -323,4 +326,4 @@ Note, the 'setPreserveComments' will no longer have any effect on the compiled l
 
 Credits
 ---
-less.php was originally ported to php by [Matt Agar](https://github.com/agar) and then updated by [Martin Jantošovič](https://github.com/Mordred).
+less.php was originally ported to php by [Matt Agar](https://github.com/agar) and then updated by [Martin Jantošovič](https://github.com/Mordred) and [Josh Schmidt](https://github.com/oyejorge).
