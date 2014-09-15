@@ -24,7 +24,7 @@
 	],
 	"support"    : {
 		"source": "https://github.com/Less-PHP/less.php.git",
-		"issues": "https://github.com/Less-PHP/less.php/issues",
+		"issues": "https://github.com/Less-PHP/less.php/issues"
 	},
 	"require": {
 		"PHP" : ">=5.2"
