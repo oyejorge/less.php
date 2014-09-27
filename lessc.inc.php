@@ -74,11 +74,11 @@ class lessc{
 
 		$parser = new Less_Parser($options);
 		$parser->setImportDirs($this->getImportDirs());
-		if( count( $this->registeredVars ) ) $parser->ModifyVars( $this->registeredVars );
 		foreach ($this->libFunctions as $name => $func) {
 			$parser->registerFunction($name, $func);
 		}
 		$parser->parse($buffer);
+		if( count( $this->registeredVars ) ) $parser->ModifyVars( $this->registeredVars );
 
 		return $parser->getCss();
 	}
@@ -101,13 +101,16 @@ class lessc{
 
 		$parser = new Less_Parser();
 		$parser->SetImportDirs($this->getImportDirs());
-		if( count( $this->registeredVars ) ){
-			$parser->ModifyVars( $this->registeredVars );
-		}
+
 		foreach ($this->libFunctions as $name => $func) {
 			$parser->registerFunction($name, $func);
 		}
 		$parser->parse($string);
+
+		if( count( $this->registeredVars ) ){
+			$parser->ModifyVars( $this->registeredVars );
+		}
+
 		$out = $parser->getCss();
 
 		$parsed = Less_Parser::AllParsedFiles();
@@ -137,11 +140,14 @@ class lessc{
 
 		$parser = new Less_Parser();
 		$parser->SetImportDirs($this->getImportDirs());
-		if( count( $this->registeredVars ) ) $parser->ModifyVars( $this->registeredVars );
+
 		foreach ($this->libFunctions as $name => $func) {
 			$parser->registerFunction($name, $func);
 		}
 		$parser->parseFile($fname);
+
+		if( count( $this->registeredVars ) ) $parser->ModifyVars( $this->registeredVars );
+
 		$out = $parser->getCss();
 
 		$parsed = Less_Parser::AllParsedFiles();
