@@ -14,6 +14,12 @@ class Less_Cache{
 	// directory less.php can use for storing data
 	public static $cache_dir	= false;
 
+	// prefix for the storing data
+	public static $prefix		= 'lessphp_';
+
+	// prefix for the storing vars
+	public static $prefix_vars	= 'lessphpvars_';
+
 	// specifies the number of seconds after which data created by less.php will be seen as 'garbage' and potentially cleaned up
 	public static $gc_lifetime	= 604800;
 
@@ -40,6 +46,22 @@ class Less_Cache{
 			throw new Exception('cache_dir not set');
 		}
 
+		if( isset($parser_options['prefix']) ){
+			Less_Cache::$prefix = $parser_options['prefix'];
+		}
+
+		if( empty(Less_Cache::$prefix) ){
+			throw new Exception('prefix not set');
+		}
+
+		if( isset($parser_options['prefix_vars']) ){
+			Less_Cache::$prefix_vars = $parser_options['prefix_vars'];
+		}
+
+		if( empty(Less_Cache::$prefix_vars) ){
+			throw new Exception('prefix_vars not set');
+		}
+
 		self::CheckCacheDir();
 		$less_files = (array)$less_files;
 
@@ -47,7 +69,7 @@ class Less_Cache{
 		//create a file for variables
 		if( !empty($modify_vars) ){
 			$lessvars = Less_Parser::serializeVars($modify_vars);
-			$vars_file = Less_Cache::$cache_dir.'lessphpvars_' . sha1($lessvars) . '.less';
+			$vars_file = Less_Cache::$cache_dir . Less_Cache::$prefix_vars . sha1($lessvars) . '.less';
 
 			if( !file_exists($vars_file) ){
 				file_put_contents($vars_file, $lessvars);
@@ -59,7 +81,7 @@ class Less_Cache{
 
 		// generate name for compiled css file
 		$hash = md5(json_encode($less_files));
- 		$list_file = Less_Cache::$cache_dir.'lessphp_'.$hash.'.list';
+ 		$list_file = Less_Cache::$cache_dir . Less_Cache::$prefix . $hash . '.list';
 
 
  		// check cached content
@@ -180,7 +202,7 @@ class Less_Cache{
 			$temp[] = filemtime($file)."\t".filesize($file)."\t".$file;
 		}
 
-		return 'lessphp_'.sha1(json_encode($temp)).'.css';
+		return Less_Cache::$prefix.sha1(json_encode($temp)).'.css';
 	}
 
 
@@ -226,7 +248,7 @@ class Less_Cache{
 			foreach($files as $file){
 
 				// don't delete if the file wasn't created with less.php
-				if( strpos($file,'lessphp_') !== 0 ){
+				if( strpos($file,Less_Cache::$prefix) !== 0 ){
 					continue;
 				}
 
@@ -284,7 +306,7 @@ class Less_Cache{
 		//pop the cached name that should match $compiled_name
 		$css_file_name = array_pop($list);
 
-		if( !preg_match('/^lessphp_[a-f0-9]+\.css$/',$css_file_name) ){
+		if( !preg_match('/^' . Less_Cache::$prefix . '[a-f0-9]+\.css$/',$css_file_name) ){
 			$list[] = $css_file_name;
 			$css_file_name = false;
 		}

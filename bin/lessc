@@ -157,7 +157,7 @@ if ($watch) {
 			}
 
 			file_put_contents($output, $parser->getCss());
-			echo("lessc: output file recompilled\n");
+			echo("lessc: output file recompiled\n");
 		}
 
 		sleep(1);

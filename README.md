@@ -1,7 +1,14 @@
+[![Build Status](https://travis-ci.org/Less-PHP/less.php.png?branch=master)](https://travis-ci.org/Less-PHP/less.php)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Less-PHP/less.php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Less-PHP/less.php/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/Less-PHP/less.php/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Less-PHP/less.php/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/less.php/less.php/v/stable.svg)](https://packagist.org/packages/less.php/less.php)
+[![Total Downloads](https://poser.pugx.org/less.php/less.php/downloads.svg)](https://packagist.org/packages/less.php/less.php)
+[![License](https://poser.pugx.org/less.php/less.php/license.svg)](https://packagist.org/packages/less.php/less.php)
+
 [Less.php](http://lessphp.gpeasy.com)
 ========
 
-This is a PHP port of the official LESS processor <http://lesscss.org>. [![Build Status](https://travis-ci.org/oyejorge/less.php.png?branch=master)](https://travis-ci.org/oyejorge/less.php)
+This is a PHP port of the official LESS processor <http://lesscss.org>.
 
 * [About](#about)
 * [Installation](#installation)
@@ -37,7 +44,7 @@ Step 1. Edit your `composer.json`:
 ```json
 {
     "require": {
-        "oyejorge/less.php": "~1.5"
+        "less.php/less.php": "~1.7"
     }
 }
 ```
@@ -51,7 +58,7 @@ $ php composer.phar install
 
 #### Manually From Release
 
-Step 1. [Download the latest release](https://github.com/oyejorge/less.php/releases) and upload the php files to your server.
+Step 1. [Download the latest release](https://github.com/Less-PHP/less.php/releases) and upload the php files to your server.
 
 Step 2. Include the library:
 
@@ -61,7 +68,7 @@ require_once '[path to less.php]/Less.php';
 
 #### Manually From Source
 
-Step 1. [Download the source](https://github.com/oyejorge/less.php/archive/master.zip) and upload the files in /lib/Less to a folder on your server.
+Step 1. [Download the source](https://github.com/Less-PHP/less.php/archive/master.zip) and upload the files in /lib/Less to a folder on your server.
 
 Step 2. Include the library and register the Autoloader
 
@@ -276,7 +283,7 @@ This library can be used as drop-in replacement of lessphp to work with [Drupal 
 
 How to install:
 
-1. [Download the less.php source code](https://github.com/oyejorge/less.php/archive/master.zip) and unzip it so that 'lessc.inc.php' is located at 'sites/all/libraries/lessphp/lessc.inc.php'.
+1. [Download the less.php source code](https://github.com/Less-PHP/less.php/archive/master.zip) and unzip it so that 'lessc.inc.php' is located at 'sites/all/libraries/lessphp/lessc.inc.php'.
 2. Download and install [Drupal 7 less module](https://drupal.org/project/less) as usual.
 3. That's it :)
 
@@ -313,10 +320,10 @@ How to install:
 
 Transitioning from Leafo/lessphp
 ---
-Projects looking for an easy transition from leafo/lessphp can use the lessc.inc.php adapter. To use, [Download the less.php source code](https://github.com/oyejorge/less.php/archive/master.zip) and unzip the files into your project so that the new 'lessc.inc.php' replaces the existing 'lessc.inc.php'.
+Projects looking for an easy transition from leafo/lessphp can use the lessc.inc.php adapter. To use, [Download the less.php source code](https://github.com/Less-PHP/less.php/archive/master.zip) and unzip the files into your project so that the new 'lessc.inc.php' replaces the existing 'lessc.inc.php'.
 
 Note, the 'setPreserveComments' will no longer have any effect on the compiled less.
 
 Credits
 ---
-less.php was originally ported to php by [Matt Agar](https://github.com/agar) and then updated by [Martin Jantošovič](https://github.com/Mordred).
+less.php was originally ported to php by [Matt Agar](https://github.com/agar) and then updated by [Martin Jantošovič](https://github.com/Mordred) and [Josh Schmidt](https://github.com/oyejorge).
