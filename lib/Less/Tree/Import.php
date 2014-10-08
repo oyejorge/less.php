@@ -238,6 +238,10 @@ class Less_Tree_Import extends Less_Tree{
 						$full_path = Less_Environment::normalizePath($path);
 						$uri = Less_Environment::normalizePath(dirname($rooturi.$evald_path));
 						return array( $full_path, $uri );
+					} elseif( file_exists($path.'.less') ){
+						$full_path = Less_Environment::normalizePath($path.'.less');
+						$uri = Less_Environment::normalizePath(dirname($rooturi.$evald_path.'.less'));
+						return array( $full_path, $uri );
 					}
 				}
 			}
