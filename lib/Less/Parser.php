@@ -970,10 +970,6 @@ class Less_Parser{
 			// detect named color
 			return $this->NewObj1('Less_Tree_Color',substr(Less_Colors::color($keyword), 1));
 		}
-
-		if( $keyword === 'transparent' ){
-			return $this->NewObj3('Less_Tree_Color', array( array(0, 0, 0), 0, true));
-		}
 	}
 
 	//
