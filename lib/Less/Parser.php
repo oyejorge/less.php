@@ -315,8 +315,26 @@ class Less_Parser{
 	 */
 	public function parseFile( $filename, $uri_root = '', $returnRoot = false){
 
+		$readFileName = $filename;
 		if( !file_exists($filename) ){
-			$this->Error(sprintf('File `%s` not found.', $filename));
+			//if the file doesn't exist, maybe we should try to load it through HTTP, because it may be dynamically generated
+			$basename = basename($filename);
+			if($uri_root == $filename) {
+				$filePossibleURL = rtrim($this->env->currentFileInfo["uri_root"], "/")."/".$basename;
+			} else {
+				$filePossibleURL = rtrim($uri_root, "/")."/".$basename;
+			}
+
+			if(strpos($filePossibleURL, "//") === 0) {
+				$filePossibleURL = "http:".$filePossibleURL;
+			}
+			$cont = @file_get_contents($filePossibleURL);
+			if(empty($cont)) { // if we got either false or an empty string, then we throw the exception.
+				$this->Error(sprintf('File `%s` not found.', $filename));
+			} else { //otherwise we save the contents we got to a temp file
+				$readFileName = tempnam(sys_get_temp_dir(), 'Lessc');
+				file_put_contents($readFileName, $cont);
+			}
 		}
 
 
@@ -335,15 +353,19 @@ class Less_Parser{
 		self::AddParsedFile($filename);
 
 		if( $returnRoot ){
-			$rules = $this->GetRules( $filename );
+			$rules = $this->GetRules( $readFileName );
 			$return = new Less_Tree_Ruleset(array(), $rules );
 		}else{
-			$this->_parse( $filename );
+			$this->_parse( $readFileName );
 			$return = $this;
 		}
 
 		if( $previousFileInfo ){
 			$this->env->currentFileInfo = $previousFileInfo;
+		}
+		
+		if($readFileName !== $filename) { //if we used a temp file, remove it
+			unlink($readFileName);
 		}
 
 		return $return;
