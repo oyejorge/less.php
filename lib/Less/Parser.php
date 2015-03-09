@@ -364,7 +364,7 @@ class Less_Parser{
 			$this->env->currentFileInfo = $previousFileInfo;
 		}
 		
-		if($readFileName !== $filename) { //if we used a temp file, remove it
+		if(realpath($readFileName) !== realpath($filename)) { //if we used a temp file, remove it
 			unlink($readFileName);
 		}
 
