@@ -291,7 +291,7 @@ class Less_Tree_Import extends Less_Tree{
 				return true;
 			}
 
-			return !isset($this->options['multiple']) && !$env->importMultiple;
+			return ( ( isset($this->options['multiple']) && !$this->options['multiple'] ) || !isset($this->options['multiple']) ) && !$env->importMultiple;
 		}
 
 	}
