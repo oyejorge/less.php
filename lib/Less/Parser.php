@@ -2469,8 +2469,11 @@ class Less_Parser{
 		$s = '';
 
 		foreach($vars as $name => $value){
-			$value = trim($value);
-			$s .= (($name[0] === '@') ? '' : '@') . $name .': ~"'. $value . '"' . ((substr($value,-1) === ';') ? '' : ';');
+			// If there is ':' in the value, escape it, using tilda and quotes
+	            	if ( strpos($value, ':') !== false ) {
+        	        	$value = '~"' . str_replace('\\', '\\\\', trim($value)) . '"';
+                	}
+			$s .= (($name[0] === '@') ? '' : '@') . $name .': '. $value . ((substr($value,-1) === ';') ? '' : ';');
 		}
 
 		return $s;
