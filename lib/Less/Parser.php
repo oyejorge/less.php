@@ -2469,7 +2469,8 @@ class Less_Parser{
 		$s = '';
 
 		foreach($vars as $name => $value){
-			$s .= (($name[0] === '@') ? '' : '@') . $name .': '. $value . ((substr($value,-1) === ';') ? '' : ';');
+			$value = trim($value);
+			$s .= (($name[0] === '@') ? '' : '@') . $name .': ~"'. $value . '"' . ((substr($value,-1) === ';') ? '' : ';');
 		}
 
 		return $s;
