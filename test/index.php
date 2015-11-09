@@ -830,7 +830,7 @@ $content = ob_get_clean();
 		if( isset($_GET['file']) ){
 			echo '<script src="assets/lessjs-config.js"></script>';
 			//echo '<script src="assets/less-1.6.3.js"></script>';
-			echo '<script src="assets/less-1.7.0.js"></script>';
+			echo '<script src="assets/less-1.7.5.js"></script>';
 		}
 	?>
 </head>
