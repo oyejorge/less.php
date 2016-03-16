@@ -374,7 +374,7 @@ class ParserTest {
 		echo ' <b>'.$line_diff.' lines mismatched</b>';
 
 
-		//check agains expected results
+		//check against expected results
 		if( $expected ){
 			$expected = trim($expected);
 			if( $generated == $expected ){

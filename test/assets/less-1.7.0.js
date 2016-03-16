@@ -658,7 +658,7 @@ less.Parser = function Parser(env) {
             // string, so we've got a parsing error.
             //
             // We try to extract a \n delimited string,
-            // showing the line where the parse error occured.
+            // showing the line where the parse error occurred.
             // We split it up into two parts (the part which parsed,
             // and the part which didn't), so we can color them differently.
             if (i < input.length - 1) {
@@ -967,7 +967,7 @@ less.Parser = function Parser(env) {
                     }
                 },
 
-                // A variable entity useing the protective {} e.g. @{var}
+                // A variable entity using the protective {} e.g. @{var}
                 variableCurly: function () {
                     var curly, index = i;
 
@@ -1360,7 +1360,7 @@ less.Parser = function Parser(env) {
             //
             // A Rule terminator. Note that we use `peek()` to check for '}',
             // because the `block` rule will be expecting it, but we still need to make sure
-            // it's there, if ';' was ommitted.
+            // it's there, if ';' was omitted.
             //
             end: function () {
                 return $char(';') || peekChar('}');
@@ -5545,8 +5545,8 @@ tree.Ruleset.prototype = {
         }
 
         // The paths are [[Selector]]
-        // The first list is a list of comma seperated selectors
-        // The inner list is a list of inheritance seperated selectors
+        // The first list is a list of comma separated selectors
+        // The inner list is a list of inheritance separated selectors
         // e.g.
         // .a, .b {
         //   .c {
@@ -5972,7 +5972,7 @@ tree.Variable.prototype = {
         'optimization',     // option - optimization level (for the chunker)
         'files',            // list of files that have been imported, used for import-once
         'contents',         // map - filename to contents of all the files
-        'contentsIgnoredChars', // map - filename to lines at the begining of each file to ignore
+        'contentsIgnoredChars', // map - filename to lines at the beginning of each file to ignore
         'relativeUrls',     // option - whether to adjust URL's to be relative
         'rootpath',         // option - rootpath to append to URL's
         'strictImports',    // option -
@@ -6792,7 +6792,7 @@ tree.Variable.prototype = {
             // a target extend is the one on the ruleset we are looking at copy/edit/pasting in place
             // e.g.  .a:extend(.b) {}  and .b:extend(.c) {} then the first extend extends the second one
             // and the second is the target.
-            // the seperation into two lists allows us to process a subset of chains with a bigger set, as is the
+            // the separation into two lists allows us to process a subset of chains with a bigger set, as is the
             // case when processing media queries
             for(extendIndex = 0; extendIndex < extendsList.length; extendIndex++){
                 for(targetExtendIndex = 0; targetExtendIndex < extendsListTarget.length; targetExtendIndex++){
