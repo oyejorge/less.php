@@ -22,10 +22,16 @@
 		"PHP" : ">=5.3"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "~4.8.18"
+		"phpunit/phpunit": "~4.8.18",
+		"jakub-onderka/php-parallel-lint": "0.9.*",
+		"squizlabs/php_codesniffer": "2.5.1"
 	},
 	"scripts": {
-		"test": "phpunit"
+		"test": [
+			"phpunit",
+			"parallel-lint . --exclude vendor",
+			"phpcs --standard= --extensions=php,php5,inc --ignore=vendor,*fail.php -p ."
+		]
 	},
 	"autoload": {
 		"psr-0": { "Less": "lib/" },
