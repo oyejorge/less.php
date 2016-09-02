@@ -352,7 +352,7 @@ class Less_Parser{
 
 
 		if( $filename ){
-			$filename = self::WinPath(realpath($filename));
+			$filename = self::AbsPath($filename, true);
 		}
 		$uri_root = self::WinPath($uri_root);
 
@@ -2658,6 +2658,18 @@ class Less_Parser{
 
 	public static function WinPath($path){
 		return str_replace('\\', '/', $path);
+	}
+
+	public static function AbsPath($path, $winPath = false){
+		if (preg_match('_^(https?:)?//\\w+(\\.\\w+)+/\\w+_', $path)) {
+			return $winPath ? '' : false;
+		} else {
+			$path = realpath($path);
+			if ($winPath) {
+				$path = self::WinPath($path);
+			}
+			return $path;
+		}
 	}
 
 	public function CacheEnabled(){

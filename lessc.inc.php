@@ -150,7 +150,7 @@ class lessc {
 		$oldImport = $this->importDir;
 
 		$this->importDir = (array)$this->importDir;
-		$this->importDir[] = realpath( $pi['dirname'] ).'/';
+		$this->importDir[] = Less_Parser::AbsPath( $pi['dirname'] ).'/';
 
 		$this->allParsedFiles = array();
 		$this->addParsedFile( $fname );
@@ -271,6 +271,6 @@ class lessc {
 	}
 
 	protected function addParsedFile( $file ) {
-		$this->allParsedFiles[realpath( $file )] = filemtime( $file );
+		$this->allParsedFiles[Less_Parser::AbsPath( $file )] = filemtime( $file );
 	}
 }
