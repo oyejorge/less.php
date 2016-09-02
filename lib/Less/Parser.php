@@ -664,9 +664,15 @@ class Less_Parser{
 		array_pop($this->saveStack);
 	}
 
-
+	/**
+	 * Determine if the character at the specified offset from the current position is a white space.
+	 *
+	 * @param int $offset
+	 *
+	 * @return bool
+	 */
 	private function isWhitespace($offset = 0) {
-		return preg_match('/\s/',$this->input[ $this->pos + $offset]);
+		return strpos(" \t\n\r\v\f", $this->input[$this->pos + $offset]) !== false;
 	}
 
 	/**
