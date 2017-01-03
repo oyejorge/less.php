@@ -2,7 +2,7 @@
 
 # 1.7.0.10
 
- - [All Changes](https://github.com/oyejorge/less.php/compare/v1.7.0.9...v1.7.10)
+ - [All Changes](https://github.com/oyejorge/less.php/compare/v1.7.0.9...v1.7.0.10)
  - Add indentation option
  - Add 'optional' modifier for @import
  - fix $color in Exception messages
