@@ -11,6 +11,7 @@ This is a PHP port of the official LESS processor <http://lesscss.org>. [![Build
 * [Command Line](#command-line)
 * [Integration with other projects](#integration-with-other-projects)
 * [Transitioning from Leafo/lessphp](#transitioning-from-leafolessphp)
+* [Books and other resources](#book-and-other-resources)
 * [Credits](#credits)
 
 
@@ -323,6 +324,10 @@ How to install:
 
 1. Install the plugin from your WordPress Dashboard: http://wordpress.org/plugins/lessphp/
 2. That's it :)
+
+Books and other resources
+---
+[Less Web Development Essentials](http://www.packtpub.com/less-web-development-essentials/book) If you use CSS(3) in your web development tasks and would love to learn how to create maintainable and reusable code with Less, this book is ideal for you. Although you need to have some experience in web development, even beginners will find that this book is useful. In chapter 6, "Bootstrap 3, WordPress and other applications", you can also read about the Less.php compiler.
 
 
 Transitioning from Leafo/lessphp
