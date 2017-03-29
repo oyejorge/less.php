@@ -370,6 +370,69 @@ class Less_Parser{
 		$color .= (strlen($b) < 2?'0':'').$b;
 		return '#'.$color;
 	}
+	
+		/**
+	 *
+	 * this function gets the private rules variable and returns an array of the found variables
+	 * it uses a helper method getVariableValue() that contains the logic ot fetch the value from the rule object
+	 *
+	 * @return array
+	 */
+	public function getVariables()
+	{
+		$vars = array();
+		foreach($this->rules as $key => $rule){
+
+			if(isset($rule->variable) && ($rule->variable == true)){
+				$vars[$rule->name] = $this->getVariableValue($rule);
+			}
+		}
+		return $vars ;
+	}
+
+	/**
+	 *
+	 * This method gets the value of the less variable from the rules object.
+	 * Since the objects vary here we add the logic for extracting the css/less value.
+	 * This will return false if it does not have the logic to extract the value
+	 * @TODO add more handles
+	 *
+	 * @param $var
+	 *
+	 * @return bool|string
+	 */
+	private function getVariableValue($var)
+	{
+		if(get_class($var->value->value[0]->value[0]) == "Less_Tree_Dimension"){
+			if(isset($var->value->value[0]->value[0]->unit->numerator[0])) {
+				return "{$var->value->value[0]->value[0]->value}{$var->value->value[0]->value[0]->unit->numerator[0]}";
+			}else{
+				return $var->value->value[0]->value[0]->value;
+			}
+		}
+		if(get_class($var->value->value[0]->value[0]) == "Less_Tree_Color"){
+			return $this->rgb2html($var->value->value[0]->value[0]->rgb);
+		}
+		return false;
+	}
+	
+	private function rgb2html($r, $g=-1, $b=-1)
+    	{
+	        if (is_array($r) && sizeof($r) == 3)
+	            list($r, $g, $b) = $r;
+	
+	        $r = intval($r); $g = intval($g);
+	        $b = intval($b);
+	
+	        $r = dechex($r<0?0:($r>255?255:$r));
+	        $g = dechex($g<0?0:($g>255?255:$g));
+	        $b = dechex($b<0?0:($b>255?255:$b));
+	
+	        $color = (strlen($r) < 2?'0':'').$r;
+	        $color .= (strlen($g) < 2?'0':'').$g;
+	        $color .= (strlen($b) < 2?'0':'').$b;
+	        return '#'.$color;
+    	}
 
 	/**
 	 * Run pre-compile visitors
