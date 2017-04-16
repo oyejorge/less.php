@@ -110,6 +110,10 @@ class Less_Environment{
 	public static function isPathRelative($path){
 		return !preg_match('/^(?:[a-z-]+:|\/)/',$path);
 	}
+	
+	public static function isValidPath($path){
+	        return preg_match('#^(\w+/){1,2}\w+\.\w+$#',$path);
+	}
 
 
 	/**

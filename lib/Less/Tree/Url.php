@@ -45,6 +45,7 @@ class Less_Tree_Url extends Less_Tree{
 				&& $this->currentFileInfo
 				&& is_string($val->value)
 				&& Less_Environment::isPathRelative($val->value)
+				&& Less_Environment::isValidRelative($val->value)
 			){
 				$rootpath = $this->currentFileInfo['uri_root'];
 				if ( !$val->quote ){
