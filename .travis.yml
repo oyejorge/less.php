@@ -8,6 +8,12 @@ php:
   - 5.3
   - hhvm
   - nightly
+
+install:
+  - travis_retry composer update --no-progress --prefer-dist --profile
+
+script:
+  - composer test
   
 sudo: false
 

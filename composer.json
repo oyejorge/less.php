@@ -19,7 +19,17 @@
 		}
 	],
 	"require": {
-		"PHP" : ">=5.3"
+		"PHP" : ">=5.3",
+		"squizlabs/php_codesniffer": "2.3.4"
+	},
+	"require-dev": {
+		"jakub-onderka/php-parallel-lint": "0.9.*"
+	},
+	"scripts": {
+		"test": [
+			"parallel-lint . --exclude vendor",
+			"phpcs --standard= --extensions=php,php5,inc --ignore=vendor,*fail.php -p ."
+		]
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.8.24"
