@@ -6,7 +6,7 @@ class Less_Tree_Mixin_Call extends Less_Tree{
 	public $selector;
 	public $arguments;
 	public $index;
-	public $currentFileInfo;
+	public $reference;
 
 	public $important;
 	public $type = 'MixinCall';
@@ -15,11 +15,11 @@ class Less_Tree_Mixin_Call extends Less_Tree{
 	 * less.js: tree.mixin.Call
 	 *
 	 */
-	public function __construct($elements, $args, $index, $currentFileInfo, $important = false){
+	public function __construct($elements, $args, $index, $reference = null, $important = false){
 		$this->selector = new Less_Tree_Selector($elements);
 		$this->arguments = $args;
 		$this->index = $index;
-		$this->currentFileInfo = $currentFileInfo;
+		$this->reference = $reference;
 		$this->important = $important;
 	}
 
@@ -126,14 +126,14 @@ class Less_Tree_Mixin_Call extends Less_Tree{
 						}
 						$rules = array_merge($rules, $mixin->evalCall($env, $args, $this->important)->rules);
 					} catch (Exception $e) {
-						//throw new Less_Exception_Compiler($e->getMessage(), $e->index, null, $this->currentFileInfo['filename']);
-						throw new Less_Exception_Compiler($e->getMessage(), null, null, $this->currentFileInfo);
+						//throw new Less_Exception_Compiler($e->getMessage(), $e->index, null, Less_Environment::$currentFileInfo['filename']);
+						throw new Less_Exception_Compiler($e->getMessage(), null, null, Less_Environment::$currentFileInfo);
 					}
 				}
 			}
 
 			if( $match ){
-				if( !$this->currentFileInfo || !isset($this->currentFileInfo['reference']) || !$this->currentFileInfo['reference'] ){
+				if( !isset($this->reference) or !$this->reference){
 					Less_Tree::ReferencedArray($rules);
 				}
 
@@ -142,10 +142,10 @@ class Less_Tree_Mixin_Call extends Less_Tree{
 		}
 
 		if( $isOneFound ){
-			throw new Less_Exception_Compiler('No matching definition was found for `'.$this->Format( $args ).'`', null, $this->index, $this->currentFileInfo);
+			throw new Less_Exception_Compiler('No matching definition was found for `'.$this->Format( $args ).'`', null, $this->index, Less_Environment::$currentFileInfo);
 
 		}else{
-			throw new Less_Exception_Compiler(trim($this->selector->toCSS()) . " is undefined in ".$this->currentFileInfo['filename'], null, $this->index);
+			throw new Less_Exception_Compiler(trim($this->selector->toCSS()) . " is undefined in ".Less_Environment::$currentFileInfo['filename'], null, $this->index);
 		}
 
 	}

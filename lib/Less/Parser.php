@@ -1499,7 +1499,7 @@ class Less_Parser{
 
 			if( $this->parseEnd() ){
 				$this->forget();
-				return $this->NewObj5('Less_Tree_Mixin_Call', array( $elements, $args, $index, Less_Environment::$currentFileInfo, $important));
+				return $this->NewObj5('Less_Tree_Mixin_Call', array( $elements, $args, $index, Less_Environment::$currentFileInfo['reference'], $important));
 			}
 		}
 
