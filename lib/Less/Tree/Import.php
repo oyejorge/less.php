@@ -173,7 +173,7 @@ class Less_Tree_Import extends Less_Tree{
 			//$contents = new Less_Tree_Anonymous($this->root, 0, array('filename'=>$this->importedFilename), true );
 
 			Less_Parser::AddParsedFile($full_path);
-			$contents = new Less_Tree_Anonymous( file_get_contents($full_path), 0, array(), true );
+			$contents = new Less_Tree_Anonymous( file_get_contents($full_path), 0, true );
 
 			if( $this->features ){
 				return new Less_Tree_Media( array($contents), $this->features->value );
