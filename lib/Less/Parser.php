@@ -1097,7 +1097,7 @@ class Less_Parser{
 		}
 
 		$quoted = $char.$matched.$char;
-		return $this->NewObj5('Less_Tree_Quoted',array($quoted, $matched, $e, $index, Less_Environment::$currentFileInfo) );
+		return $this->NewObj4('Less_Tree_Quoted',array($quoted, $matched, $e, $index) );
 	}
 
 
