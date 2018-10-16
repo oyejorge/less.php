@@ -1897,7 +1897,7 @@ class Less_Parser{
 		}
 
 		if( $elements ){
-			return $this->NewObj5('Less_Tree_Selector',array($elements, $extendList, $condition, $index, Less_Environment::$currentFileInfo));
+			return $this->NewObj5('Less_Tree_Selector',array($elements, $extendList, $condition, $index, Less_Environment::$currentFileInfo['reference']));
 		}
 		if( $extendList ) {
 			$this->Error('Extend must be used to extend a selector, it cannot be used on its own');

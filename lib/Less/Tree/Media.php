@@ -82,7 +82,7 @@ class Less_Tree_Media extends Less_Tree{
 
 	public function emptySelectors(){
 		$el = new Less_Tree_Element('','&', $this->index);
-		$sels = array( new Less_Tree_Selector(array($el), array(), null, $this->index, $this->currentFileInfo) );
+		$sels = array( new Less_Tree_Selector(array($el), array(), null, $this->index, Less_Environment::$currentFileInfo['reference']) );
 		$sels[0]->mediaEmpty = true;
         return $sels;
 	}

@@ -15,7 +15,7 @@ class Less_Tree_Selector extends Less_Tree{
 	public $index;
 	public $evaldCondition = false;
 	public $type = 'Selector';
-	public $currentFileInfo = array();
+	public $reference;
 	public $isReferenced;
 	public $mediaEmpty;
 
@@ -28,16 +28,14 @@ class Less_Tree_Selector extends Less_Tree{
 	/**
 	 * @param boolean $isReferenced
 	 */
-	public function __construct( $elements, $extendList = array() , $condition = null, $index=null, $currentFileInfo=null, $isReferenced=null ){
+	public function __construct( $elements, $extendList = array() , $condition = null, $index=null, $reference=null, $isReferenced=null){
 
 		$this->elements = $elements;
 		$this->elements_len = count($elements);
 		$this->extendList = $extendList;
 		$this->condition = $condition;
-		if( $currentFileInfo ){
-			$this->currentFileInfo = $currentFileInfo;
-		}
 		$this->isReferenced = $isReferenced;
+		$this->reference = $reference;
 		if( !$condition ){
 			$this->evaldCondition = true;
 		}
@@ -58,7 +56,7 @@ class Less_Tree_Selector extends Less_Tree{
 	}
 
     public function createDerived( $elements, $extendList = null, $evaldCondition = null ){
-		$newSelector = new Less_Tree_Selector( $elements, ($extendList ? $extendList : $this->extendList), null, $this->index, $this->currentFileInfo, $this->isReferenced);
+		$newSelector = new Less_Tree_Selector( $elements, ($extendList ? $extendList : $this->extendList), null, $this->index, $this->reference, $this->isReferenced);
 		$newSelector->evaldCondition = $evaldCondition ? $evaldCondition : $this->evaldCondition;
 		return $newSelector;
 	}
@@ -145,7 +143,7 @@ class Less_Tree_Selector extends Less_Tree{
     public function genCSS( $output, $firstSelector = true ){
 
 		if( !$firstSelector && $this->elements[0]->combinator === "" ){
-			$output->add(' ', $this->currentFileInfo, $this->index);
+			$output->add(' ', Less_Environment::$currentFileInfo, $this->index);
 		}
 
 		foreach($this->elements as $element){
@@ -158,7 +156,7 @@ class Less_Tree_Selector extends Less_Tree{
 	}
 
     public function getIsReferenced(){
-		return !isset($this->currentFileInfo['reference']) || !$this->currentFileInfo['reference'] || $this->isReferenced;
+		return !isset($this->reference) || !$this->reference || $this->isReferenced;
 	}
 
     public function getIsOutput(){
