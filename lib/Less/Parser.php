@@ -879,7 +879,7 @@ class Less_Parser{
 	// Match a regexp from the current start point
 	private function MatchReg($tok){
 
-		if( preg_match($tok, $this->input, $match, 0, $this->pos) ){
+		if( preg_match($tok . "S", $this->input, $match, 0, $this->pos) ){
 			$this->skipWhitespace(strlen($match[0]));
 			return $match;
 		}
@@ -916,7 +916,7 @@ class Less_Parser{
 		for(; $this->pos < $this->input_len; $this->pos++ ){
 			$c = $this->input[$this->pos];
 
-			if( ($c !== "\n") && ($c !== "\r") && ($c !== "\t") && ($c !== ' ') ){
+			if( strpos( "\n\r\t ", $c ) === false ){
 				break;
 			}
 		}
@@ -2119,7 +2119,9 @@ class Less_Parser{
 
 		$this->save();
 
-		$dir = $this->MatchReg('/\\G@import?\s+/');
+		$dir = '';
+		if ($this->PeekChar('@'))
+			$dir = $this->MatchReg('/\\G@import?\s+/');
 
 		if( $dir ){
 			$options = $this->parseImportOptions();
@@ -2228,7 +2230,7 @@ class Less_Parser{
 	}
 
 	private function parseMedia() {
-		if( $this->MatchReg('/\\G@media/') ){
+		if( $this->PeekChar('@') && $this->MatchReg('/\\G@media/') ){
 			$features = $this->parseMediaFeatures();
 			$rules = $this->parseBlock();
 
