@@ -1517,7 +1517,7 @@ class Less_Parser{
 			if( !$e ){
 				break;
 			}
-			$elements[] = $this->NewObj4('Less_Tree_Element', array($c, $e[0], $elemIndex, Less_Environment::$currentFileInfo));
+			$elements[] = $this->NewObj3('Less_Tree_Element', array($c, $e[0], $elemIndex));
 			$c = $this->MatchChar('>');
 		}
 
@@ -1815,7 +1815,7 @@ class Less_Parser{
 		}
 
 		if( !is_null($e) ){
-			return $this->NewObj4('Less_Tree_Element',array( $c, $e, $index, Less_Environment::$currentFileInfo));
+			return $this->NewObj3('Less_Tree_Element',array( $c, $e, $index));
 		}
 	}
 

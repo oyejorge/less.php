@@ -402,8 +402,7 @@ class Less_Visitor_processExtends extends Less_Visitor{
 			$firstElement = new Less_Tree_Element(
 				$match['initialCombinator'],
 				$replacementSelector->elements[0]->value,
-				$replacementSelector->elements[0]->index,
-				$replacementSelector->elements[0]->currentFileInfo
+				$replacementSelector->elements[0]->index
 			);
 
 			if( $match['pathIndex'] > $currentSelectorPathIndex && $currentSelectorPathElementIndex > 0 ){

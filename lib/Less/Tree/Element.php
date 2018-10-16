@@ -11,12 +11,11 @@ class Less_Tree_Element extends Less_Tree{
 	public $combinator = '';
 	public $value = '';
 	public $index;
-	public $currentFileInfo;
 	public $type = 'Element';
 
 	public $value_is_object = false;
 
-	public function __construct($combinator, $value, $index = null, $currentFileInfo = null ){
+	public function __construct($combinator, $value, $index = null ){
 
 		$this->value = $value;
 		$this->value_is_object = is_object($value);
@@ -26,7 +25,6 @@ class Less_Tree_Element extends Less_Tree{
 		}
 
 		$this->index = $index;
-		$this->currentFileInfo = $currentFileInfo;
 	}
 
     public function accept( $visitor ){
@@ -38,7 +36,7 @@ class Less_Tree_Element extends Less_Tree{
 	public function compile($env){
 
 		if( Less_Environment::$mixin_stack ){
-			return new Less_Tree_Element($this->combinator, ($this->value_is_object ? $this->value->compile($env) : $this->value), $this->index, $this->currentFileInfo );
+			return new Less_Tree_Element($this->combinator, ($this->value_is_object ? $this->value->compile($env) : $this->value), $this->index );
 		}
 
 		if( $this->value_is_object ){
@@ -52,7 +50,7 @@ class Less_Tree_Element extends Less_Tree{
      * @see Less_Tree::genCSS
      */
 	public function genCSS( $output ){
-		$output->add( $this->toCSS(), $this->currentFileInfo, $this->index );
+		$output->add( $this->toCSS(), Less_Environment::$currentFileInfo, $this->index );
 	}
 
 	public function toCSS(){
