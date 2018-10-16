@@ -2701,7 +2701,7 @@ class Less_Parser{
 	public function NewObj1($class, $arg){
 		$obj = new $class( $arg );
 		if( $this->CacheEnabled() ){
-			$obj->cache_string = ' new '.$class.'('.Less_Parser::ArgString($arg).')';
+			$obj->cache_string = ' new '.$class.'('. (is_scalar($arg) ? var_export($arg, true) : Less_Parser::ArgString($arg)) .')';
 		}
 		return $obj;
 	}
@@ -2771,17 +2771,16 @@ class Less_Parser{
 	 */
 	public static function ArgString($arg){
 
-		$type = gettype($arg);
-
-		if( $type === 'object'){
+		if( is_object($arg) ){
 			$string = $arg->cache_string;
 			unset($arg->cache_string);
 			return $string;
 
-		}elseif( $type === 'array' ){
+		}
+		elseif( is_array($arg) ){
 			$string = ' Array(';
 			foreach($arg as $k => $a){
-				$string .= var_export($k,true).' => '.self::ArgString($a).',';
+				$string .= var_export($k,true).' => '.(is_scalar($a) ? var_export($a,true) : self::ArgString($a)).',';
 			}
 			return $string . ')';
 		}
