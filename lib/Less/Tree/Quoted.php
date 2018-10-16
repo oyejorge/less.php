@@ -53,7 +53,7 @@ class Less_Tree_Quoted extends Less_Tree{
 
 		if( preg_match_all('/@\{([\w-]+)\}/',$value,$matches) ){
 			foreach($matches[1] as $i => $match){
-				$v = new Less_Tree_Variable('@' . $match, $this->index, $this->currentFileInfo );
+				$v = new Less_Tree_Variable('@' . $match, $this->index);
 				$v = $v->compile($env);
 				$v = ($v instanceof Less_Tree_Quoted) ? $v->value : $v->toCSS();
 				$value = str_replace($matches[0][$i], $v, $value);

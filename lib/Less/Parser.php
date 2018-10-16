@@ -1307,7 +1307,7 @@ class Less_Parser{
 	private function parseEntitiesVariable(){
 		$index = $this->pos;
 		if ($this->PeekChar('@') && ($name = $this->MatchReg('/\\G@@?[\w-]+/'))) {
-			return $this->NewObj3('Less_Tree_Variable', array( $name[0], $index, Less_Environment::$currentFileInfo));
+			return $this->NewObj2('Less_Tree_Variable', array( $name[0], $index));
 		}
 	}
 
@@ -1317,7 +1317,7 @@ class Less_Parser{
 		$index = $this->pos;
 
 		if( $this->input_len > ($this->pos+1) && $this->input[$this->pos] === '@' && ($curly = $this->MatchReg('/\\G@\{([\w-]+)\}/')) ){
-			return $this->NewObj3('Less_Tree_Variable',array('@'.$curly[1], $index, Less_Environment::$currentFileInfo));
+			return $this->NewObj2('Less_Tree_Variable',array('@'.$curly[1], $index));
 		}
 	}
 
@@ -2628,7 +2628,7 @@ class Less_Parser{
 				if( !$s || $s[0] !== '@' ){
 					$name[$k] = $this->NewObj1('Less_Tree_Keyword',$s);
 				}else{
-					$name[$k] = $this->NewObj3('Less_Tree_Variable',array('@' . substr($s,2,-1), $index[$k], Less_Environment::$currentFileInfo));
+					$name[$k] = $this->NewObj2('Less_Tree_Variable',array('@' . substr($s,2,-1), $index[$k]));
 				}
 			}
 			return $name;
