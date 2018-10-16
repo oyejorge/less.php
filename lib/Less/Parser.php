@@ -2027,7 +2027,7 @@ class Less_Parser{
 				$match[2] .= ' !important';
 			}
 
-			return $this->NewObj4('Less_Tree_NameValue',array( $match[1], $match[2], $index, Less_Environment::$currentFileInfo));
+			return $this->NewObj3('Less_Tree_NameValue',array( $match[1], $match[2], $index));
 		}
 
 		$this->restore();
