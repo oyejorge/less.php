@@ -2084,7 +2084,7 @@ class Less_Parser{
 
 			if( $value && $this->parseEnd() ){
 				$this->forget();
-				return $this->NewObj6('Less_Tree_Rule',array( $name, $value, $important, $merge, $startOfRule, Less_Environment::$currentFileInfo));
+				return $this->NewObj5('Less_Tree_Rule',array( $name, $value, $important, $merge, $startOfRule));
 			}else{
 				$this->furthest = $this->pos;
 				$this->restore();
@@ -2190,7 +2190,7 @@ class Less_Parser{
 				$e = $this->parseValue();
 				if ($this->MatchChar(')')) {
 					if ($p && $e) {
-						$r = $this->NewObj7('Less_Tree_Rule', array( $p, $e, null, null, $this->pos, Less_Environment::$currentFileInfo, true));
+						$r = $this->NewObj6('Less_Tree_Rule', array( $p, $e, null, null, $this->pos, true));
 						$nodes[] = $this->NewObj1('Less_Tree_Paren',$r);
 					} elseif ($e) {
 						$nodes[] = $this->NewObj1('Less_Tree_Paren',$e);
