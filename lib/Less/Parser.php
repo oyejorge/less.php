@@ -554,6 +554,7 @@ class Less_Parser{
 		$currentFileInfo['currentUri'] = $uri_root.basename($filename);
 		$currentFileInfo['filename'] = $filename;
 		$currentFileInfo['uri_root'] = $uri_root;
+		$currentFileInfo['reference'] = null;
 
 
 		//inherit reference
@@ -1038,13 +1039,13 @@ class Less_Parser{
 
 		if( $this->input[$this->pos+1] === '/' ){
 			$match = $this->MatchReg('/\\G\/\/.*/');
-			return $this->NewObj4('Less_Tree_Comment',array($match[0], true, $this->pos, Less_Environment::$currentFileInfo));
+			return $this->NewObj4('Less_Tree_Comment',array($match[0], true, $this->pos, Less_Environment::$currentFileInfo['reference']));
 		}
 
 		//$comment = $this->MatchReg('/\\G\/\*(?:[^*]|\*+[^\/*])*\*+\/\n?/');
 		$comment = $this->MatchReg('/\\G\/\*(?s).*?\*+\/\n?/');//not the same as less.js to prevent fatal errors
 		if( $comment ){
-			return $this->NewObj4('Less_Tree_Comment',array($comment[0], false, $this->pos, Less_Environment::$currentFileInfo));
+			return $this->NewObj4('Less_Tree_Comment',array($comment[0], false, $this->pos, Less_Environment::$currentFileInfo['reference']));
 		}
 	}
 
