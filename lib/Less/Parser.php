@@ -2233,7 +2233,7 @@ class Less_Parser{
 			$rules = $this->parseBlock();
 
 			if( is_array($rules) ){
-				return $this->NewObj4('Less_Tree_Media',array( $rules, $features, $this->pos, Less_Environment::$currentFileInfo));
+				return $this->NewObj3('Less_Tree_Media',array( $rules, $features, $this->pos));
 			}
 		}
 	}
