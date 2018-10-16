@@ -10,13 +10,13 @@ class Less_Tree_Url extends Less_Tree{
 
 	public $attrs;
 	public $value;
-	public $currentFileInfo;
+	public $uri_root;
 	public $isEvald;
 	public $type = 'Url';
 
-	public function __construct($value, $currentFileInfo = null, $isEvald = null){
+	public function __construct($value, $uri_root = null, $isEvald = null){
 		$this->value = $value;
-		$this->currentFileInfo = $currentFileInfo;
+		$this->uri_root = $uri_root;
 		$this->isEvald = $isEvald;
 	}
 
@@ -42,11 +42,11 @@ class Less_Tree_Url extends Less_Tree{
 		if( !$this->isEvald ){
 			// Add the base path if the URL is relative
 			if( Less_Parser::$options['relativeUrls']
-				&& $this->currentFileInfo
+				&& $this->uri_root
 				&& is_string($val->value)
 				&& Less_Environment::isPathRelative($val->value)
 			){
-				$rootpath = $this->currentFileInfo['uri_root'];
+				$rootpath = $this->uri_root;
 				if ( !$val->quote ){
 					$rootpath = preg_replace('/[\(\)\'"\s]/', '\\$1', $rootpath );
 				}
@@ -70,7 +70,7 @@ class Less_Tree_Url extends Less_Tree{
 			}
 		}
 
-		return new Less_Tree_URL($val, $this->currentFileInfo, true);
+		return new Less_Tree_URL($val, $this->uri_root, true);
 	}
 
 }

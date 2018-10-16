@@ -1289,10 +1289,10 @@ class Less_Parser{
 
 
 		if( isset($value->value) || $value instanceof Less_Tree_Variable ){
-			return $this->NewObj2('Less_Tree_Url',array($value, Less_Environment::$currentFileInfo));
+			return $this->NewObj2('Less_Tree_Url', array($value, Less_Environment::$currentFileInfo['uri_root']) );
 		}
 
-		return $this->NewObj2('Less_Tree_Url', array( $this->NewObj1('Less_Tree_Anonymous',$value), Less_Environment::$currentFileInfo) );
+		return $this->NewObj2('Less_Tree_Url', array($this->NewObj1('Less_Tree_Anonymous',$value), Less_Environment::$currentFileInfo['uri_root']) );
 	}
 
 
