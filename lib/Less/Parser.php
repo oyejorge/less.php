@@ -465,7 +465,7 @@ class Less_Parser{
 	 * @param bool $returnRoot Indicates whether the return value should be a css string a root node
 	 * @return Less_Tree_Ruleset|Less_Parser
 	 */
-	public function parseFile( $filename, $uri_root = '', $returnRoot = false){
+	public function parseFile( $filename, $uri_root = '', $returnRoot = false, $reference = null){
 
 		if( !file_exists($filename) ){
 			$this->Error(sprintf('File `%s` not found.', $filename));
@@ -488,6 +488,9 @@ class Less_Parser{
 		$uri_root = self::WinPath($uri_root);
 
 		$this->SetFileInfo($filename, $uri_root);
+		if (!is_null($reference)) {
+			Less_Environment::$currentFileInfo['reference'] = $reference;
+		}
 
 		self::AddParsedFile($filename);
 

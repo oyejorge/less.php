@@ -262,9 +262,12 @@ class Less_Tree_Import extends Less_Tree{
 	 */
     public function ParseImport( $full_path, $uri, $env ){
 
+    $previousFileInfo = Less_Environment::$currentFileInfo;
 		$import_env = clone $env;
+		$reference = null;
 		if( (isset($this->options['reference']) && $this->options['reference']) || isset($this->currentFileInfo['reference']) ){
-			$import_env->currentFileInfo['reference'] = true;
+			$reference = true;
+			Less_Environment::$currentFileInfo['reference'] = true;
 		}
 
 		if( (isset($this->options['multiple']) && $this->options['multiple']) ){
@@ -272,12 +275,13 @@ class Less_Tree_Import extends Less_Tree{
 		}
 
 		$parser = new Less_Parser($import_env);
-		$root = $parser->parseFile($full_path, $uri, true);
+		$root = $parser->parseFile($full_path, $uri, true, $reference);
 
 
 		$ruleset = new Less_Tree_Ruleset(array(), $root->rules );
 		$ruleset->evalImports($import_env);
 
+    Less_Environment::$currentFileInfo = $previousFileInfo;
 		return $this->features ? new Less_Tree_Media($ruleset->rules, $this->features->value) : $ruleset->rules;
 	}
 
