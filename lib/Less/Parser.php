@@ -1213,7 +1213,7 @@ class Less_Parser{
 		}
 
 		if ($name) {
-			return $this->NewObj4('Less_Tree_Call',array($name, $args, $index, Less_Environment::$currentFileInfo) );
+			return $this->NewObj3('Less_Tree_Call',array($name, $args, $index) );
 		}
 	}
 

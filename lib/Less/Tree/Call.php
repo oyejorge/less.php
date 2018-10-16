@@ -13,14 +13,12 @@ class Less_Tree_Call extends Less_Tree{
     public $name;
     public $args;
     public $index;
-    public $currentFileInfo;
     public $type = 'Call';
 
-	public function __construct($name, $args, $index, $currentFileInfo = null ){
+	public function __construct($name, $args, $index){
 		$this->name = $name;
 		$this->args = $args;
 		$this->index = $index;
-		$this->currentFileInfo = $currentFileInfo;
 	}
 
     public function accept( $visitor ){
@@ -73,7 +71,7 @@ class Less_Tree_Call extends Less_Tree{
 			if( method_exists('Less_Functions',$nameLC) ){ // 1.
 				try {
 
-					$func = new Less_Functions($env, $this->currentFileInfo);
+					$func = new Less_Functions($env, Less_Environment::$currentFileInfo);
 					$result = call_user_func_array( array($func,$nameLC),$args);
 
 				} catch (Exception $e) {
@@ -93,7 +91,7 @@ class Less_Tree_Call extends Less_Tree{
 		}
 
 
-		return new Less_Tree_Call( $this->name, $args, $this->index, $this->currentFileInfo );
+		return new Less_Tree_Call( $this->name, $args, $this->index);
     }
 
     /**
@@ -101,7 +99,7 @@ class Less_Tree_Call extends Less_Tree{
      */
 	public function genCSS( $output ){
 
-		$output->add( $this->name . '(', $this->currentFileInfo, $this->index );
+		$output->add( $this->name . '(', Less_Environment::$currentFileInfo, $this->index );
 		$args_len = count($this->args);
 		for($i = 0; $i < $args_len; $i++ ){
 			$this->args[$i]->genCSS( $output );
