@@ -1,7 +1,8 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 
-class phpunit_bootstrap extends PHPUnit_Framework_TestCase{
+class phpunit_bootstrap extends TestCase{
 
 	public $fixtures_dir;
 	public $cache_dir;
