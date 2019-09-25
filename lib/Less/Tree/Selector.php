@@ -22,6 +22,7 @@ class Less_Tree_Selector extends Less_Tree{
 	public $elements_len = 0;
 
 	public $_oelements;
+	public $_oelements_assoc;
 	public $_oelements_len;
 	public $cacheable = true;
 
@@ -83,6 +84,8 @@ class Less_Tree_Selector extends Less_Tree{
 	public function CacheElements(){
 
 		$this->_oelements = array();
+		$this->_oelements_assoc = array();
+
 		$css = '';
 
 		foreach($this->elements as $v){
@@ -108,6 +111,8 @@ class Less_Tree_Selector extends Less_Tree{
 				array_shift($this->_oelements);
 				$this->_oelements_len--;
 			}
+
+            $this->_oelements_assoc = array_fill_keys($this->_oelements, true);
 		}
 	}
 

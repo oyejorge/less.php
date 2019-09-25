@@ -42,8 +42,10 @@ class Less_Tree_Extend extends Less_Tree{
 			break;
 		}
 
-		$this->object_id = $i++;
-		$this->parent_ids = array($this->object_id);
+		// string value is needed to make sure array_merge() processes keys as strings, not as numerics
+        $this->object_id = 'id_' . $i++;
+
+		$this->parent_ids = array($this->object_id => true);
 	}
 
     public function accept( $visitor ){

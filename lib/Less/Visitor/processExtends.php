@@ -54,7 +54,7 @@ class Less_Visitor_processExtends extends Less_Visitor{
 				$targetExtend = $extendsListTarget[$targetExtendIndex];
 
 				// look for circular references
-				if( in_array($targetExtend->object_id, $extend->parent_ids,true) ){
+                if (isset($extend->parent_ids[$targetExtend->object_id])) {
 					continue;
 				}
 
@@ -269,7 +269,7 @@ class Less_Visitor_processExtends extends Less_Visitor{
 				return true;
 			}
 
-			if( in_array($first_el, $hackstackSelector->_oelements) ){
+            if (isset($hackstackSelector->_oelements_assoc[$first_el])) {
 				return true;
 			}
 		}
