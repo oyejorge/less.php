@@ -12,12 +12,12 @@ class Less_Tree_Directive extends Less_Tree{
 	public $value;
 	public $rules;
 	public $index;
+	public $reference;
 	public $isReferenced;
-	public $currentFileInfo;
 	public $debugInfo;
 	public $type = 'Directive';
 
-	public function __construct($name, $value = null, $rules, $index = null, $currentFileInfo = null, $debugInfo = null ){
+	public function __construct($name, $value = null, $rules, $index = null, $reference = null, $debugInfo = null ){
 		$this->name = $name;
 		$this->value = $value;
 		if( $rules ){
@@ -26,7 +26,7 @@ class Less_Tree_Directive extends Less_Tree{
 		}
 
 		$this->index = $index;
-		$this->currentFileInfo = $currentFileInfo;
+		$this->reference = $reference;
 		$this->debugInfo = $debugInfo;
 	}
 
@@ -47,7 +47,7 @@ class Less_Tree_Directive extends Less_Tree{
     public function genCSS( $output ){
 		$value = $this->value;
 		$rules = $this->rules;
-		$output->add( $this->name, $this->currentFileInfo, $this->index );
+		$output->add( $this->name, Less_Environment::$currentFileInfo, $this->index );
 		if( $this->value ){
 			$output->add(' ');
 			$this->value->genCSS($output);
@@ -72,7 +72,7 @@ class Less_Tree_Directive extends Less_Tree{
 			$rules->root = true;
 		}
 
-		return new Less_Tree_Directive( $this->name, $value, $rules, $this->index, $this->currentFileInfo, $this->debugInfo );
+		return new Less_Tree_Directive( $this->name, $value, $rules, $this->index, $this->reference, $this->debugInfo );
 	}
 
 
@@ -95,6 +95,10 @@ class Less_Tree_Directive extends Less_Tree{
 		if( $this->rules ){
 			Less_Tree::ReferencedArray($this->rules->rules);
 		}
+	}
+
+	public function getIsReferenced(){
+		return !isset($this->reference) || !$this->reference || $this->isReferenced;
 	}
 
 }

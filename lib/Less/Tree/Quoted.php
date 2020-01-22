@@ -11,20 +11,18 @@ class Less_Tree_Quoted extends Less_Tree{
 	public $value;
 	public $quote;
 	public $index;
-	public $currentFileInfo;
 	public $type = 'Quoted';
 
 	/**
 	 * @param string $str
 	 */
-	public function __construct($str, $content = '', $escaped = false, $index = false, $currentFileInfo = null ){
+	public function __construct($str, $content = '', $escaped = false, $index = false){
 		$this->escaped = $escaped;
 		$this->value = $content;
 		if( $str ){
 			$this->quote = $str[0];
 		}
 		$this->index = $index;
-		$this->currentFileInfo = $currentFileInfo;
 	}
 
     /**
@@ -32,7 +30,7 @@ class Less_Tree_Quoted extends Less_Tree{
      */
     public function genCSS( $output ){
 		if( !$this->escaped ){
-			$output->add( $this->quote, $this->currentFileInfo, $this->index );
+			$output->add( $this->quote, Less_Environment::$currentFileInfo, $this->index );
         }
         $output->add( $this->value );
         if( !$this->escaped ){
@@ -53,14 +51,14 @@ class Less_Tree_Quoted extends Less_Tree{
 
 		if( preg_match_all('/@\{([\w-]+)\}/',$value,$matches) ){
 			foreach($matches[1] as $i => $match){
-				$v = new Less_Tree_Variable('@' . $match, $this->index, $this->currentFileInfo );
+				$v = new Less_Tree_Variable('@' . $match, $this->index);
 				$v = $v->compile($env);
 				$v = ($v instanceof Less_Tree_Quoted) ? $v->value : $v->toCSS();
 				$value = str_replace($matches[0][$i], $v, $value);
 			}
 		}
 
-		return new Less_Tree_Quoted($this->quote . $value . $this->quote, $value, $this->escaped, $this->index, $this->currentFileInfo);
+		return new Less_Tree_Quoted($this->quote . $value . $this->quote, $value, $this->escaped, $this->index);
 	}
 
     public function compare($x) {

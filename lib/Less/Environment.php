@@ -17,7 +17,7 @@ class Less_Environment{
 	//public $processImports;				// option - whether to process imports. if false then imports will not be imported
 	//public $javascriptEnabled;			// option - whether JavaScript is enabled. if undefined, defaults to true
 	//public $useFileCache;					// browser only - whether to use the per file session cache
-	public $currentFileInfo;				// information about the current file - for error reporting and importing and making urls relative etc.
+	public static $currentFileInfo;				// information about the current file - for error reporting and importing and making urls relative etc.
 
 	public $importMultiple = false; 		// whether we are currently importing multiple copies
 

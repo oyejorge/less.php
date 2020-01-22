@@ -911,7 +911,7 @@ class Less_Functions{
 		$DATA_URI_MAX_KB = 32;
 		$fileSizeInKB = round( strlen($buf) / 1024 );
 		if( $fileSizeInKB >= $DATA_URI_MAX_KB ){
-			$url = new Less_Tree_Url( ($filePathNode ? $filePathNode : $mimetypeNode), $this->currentFileInfo);
+			$url = new Less_Tree_Url( ($filePathNode ? $filePathNode : $mimetypeNode), $this->currentFileInfo['uri_root'] );
 			return $url->compile($this);
 		}
 

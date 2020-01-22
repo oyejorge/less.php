@@ -11,14 +11,12 @@ class Less_Tree_Media extends Less_Tree{
 	public $features;
 	public $rules;
 	public $index;
-	public $currentFileInfo;
 	public $isReferenced;
 	public $type = 'Media';
 
-	public function __construct($value = array(), $features = array(), $index = null, $currentFileInfo = null ){
+	public function __construct($value = array(), $features = array(), $index = null){
 
 		$this->index = $index;
-		$this->currentFileInfo = $currentFileInfo;
 
 		$selectors = $this->emptySelectors();
 
@@ -38,7 +36,7 @@ class Less_Tree_Media extends Less_Tree{
      */
     public function genCSS( $output ){
 
-		$output->add( '@media ', $this->currentFileInfo, $this->index );
+		$output->add( '@media ', Less_Environment::$currentFileInfo, $this->index );
 		$this->features->genCSS( $output );
 		Less_Tree::outputRuleset( $output, $this->rules);
 
@@ -46,7 +44,7 @@ class Less_Tree_Media extends Less_Tree{
 
 	public function compile($env) {
 
-		$media = new Less_Tree_Media(array(), array(), $this->index, $this->currentFileInfo );
+		$media = new Less_Tree_Media(array(), array(), $this->index );
 
 		$strictMathBypass = false;
 		if( Less_Parser::$options['strictMath'] === false) {
@@ -81,8 +79,8 @@ class Less_Tree_Media extends Less_Tree{
 	}
 
 	public function emptySelectors(){
-		$el = new Less_Tree_Element('','&', $this->index, $this->currentFileInfo );
-		$sels = array( new Less_Tree_Selector(array($el), array(), null, $this->index, $this->currentFileInfo) );
+		$el = new Less_Tree_Element('','&', $this->index);
+		$sels = array( new Less_Tree_Selector(array($el), array(), null, $this->index, Less_Environment::$currentFileInfo['reference']) );
 		$sels[0]->mediaEmpty = true;
         return $sels;
 	}

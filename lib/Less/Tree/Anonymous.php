@@ -11,22 +11,20 @@ class Less_Tree_Anonymous extends Less_Tree{
 	public $quote;
 	public $index;
 	public $mapLines;
-	public $currentFileInfo;
 	public $type = 'Anonymous';
 
 	/**
 	 * @param integer $index
 	 * @param boolean $mapLines
 	 */
-	public function __construct($value, $index = null, $currentFileInfo = null, $mapLines = null ){
+	public function __construct($value, $index = null, $mapLines = null ){
 		$this->value = $value;
 		$this->index = $index;
 		$this->mapLines = $mapLines;
-		$this->currentFileInfo = $currentFileInfo;
 	}
 
 	public function compile(){
-		return new Less_Tree_Anonymous($this->value, $this->index, $this->currentFileInfo, $this->mapLines);
+		return new Less_Tree_Anonymous($this->value, $this->index, $this->mapLines);
 	}
 
     public function compare($x){
@@ -48,7 +46,7 @@ class Less_Tree_Anonymous extends Less_Tree{
      * @see Less_Tree::genCSS
      */
 	public function genCSS( $output ){
-		$output->add( $this->value, $this->currentFileInfo, $this->index, $this->mapLines );
+		$output->add( $this->value, Less_Environment::$currentFileInfo, $this->index, $this->mapLines );
 	}
 
 	public function toCSS(){
