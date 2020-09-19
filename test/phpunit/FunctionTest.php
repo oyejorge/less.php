@@ -5,8 +5,6 @@ class phpunit_FunctionTest extends phpunit_bootstrap{
 	 * Test
 	 */
 	public function testFunction() {
-		echo "\nBegin Tests";
-
 		$less_file = $this->fixtures_dir.'/functions/less/f1.less';
 		$expected_css = file_get_contents( $this->fixtures_dir.'/functions/css/f1.css' );
 
