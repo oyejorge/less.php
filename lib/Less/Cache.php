@@ -198,7 +198,9 @@ class Less_Cache{
 		//save the file list
 		$temp = array(Less_Version::cache_version);
 		foreach($files as $file){
-			$temp[] = filemtime($file)."\t".filesize($file)."\t".$file;
+			if(is_readable($file)){
+				$temp[] = filemtime($file)."\t".filesize($file)."\t".$file;
+			}
 		}
 
 		return Less_Cache::$prefix.sha1(json_encode($temp).$extrahash).'.css';
