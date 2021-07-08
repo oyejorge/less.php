@@ -30,7 +30,7 @@
 		]
 	},
 	"autoload": {
-		"psr-0": { "Less": "lib/" },
+		"psr-4": { "Less\\": "lib/Less/" },
 		"classmap": ["lessc.inc.php"]
 	},
 	"bin": [
